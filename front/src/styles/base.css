@@ -1,0 +1,27 @@
+.img-avatar_BS {
+  width: 54px;
+  height: 54px;
+}
+
+.cont-img-avatar_BS {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fffff8;
+  border: 1px solid #9b9b9b;
+  background-color: "#fffff8";
+  padding: 6px;
+}
+
+/* Estilo para os itens não selecionados */
+.ant-menu-item {
+  color: white !important; /* Cor branca */
+  font-weight: bold !important; /* Texto em negrito */
+}
+
+/* Alterar a cor quando o item estiver selecionado */
+.ant-menu-item-selected {
+  color: #007bff !important; /* Cor do item selecionado */
+  font-weight: normal !important; /* Peso de fonte normal */
+}
+

@@ -1,0 +1,43 @@
+.btn-step{
+    background-color: #ffd600;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid #ebc403;
+    border-radius: 4px;
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.btn-step:hover{
+    background-color: #ebc403 !important;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid #ffd600;
+    border-radius: 4px;
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.container-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #cc0b10;
+    padding: 40px;
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+}
+
+.content-step{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #fffff8;
+    padding: 40px;
+    font-family: 'Montserrat', sans-serif; 
+    flex-direction: column;
+}
