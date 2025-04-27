@@ -1,43 +1,91 @@
-.btn-step{
+/* Container geral que ocupa toda a tela */
+.steps-container-new {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* IMPORTANTE */
+    height: 100vh; /* ocupa a tela toda */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Área dos steps */
+.steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-inline: 20px;
+    box-sizing: border-box;
+}
+
+/* Cada bolinha */
+.step-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bolinha */
+.step-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    border: 4px solid #7b7b7b;
+    color: #7b7b7b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+/* Linha flexível */
+.step-line-flex {
+    flex-grow: 1;
+    height: 4px;
+    background-color: #ffd600;
+    margin: 0 10px;
+}
+
+/* Step ativo */
+.step-circle.active {
+    background-color: #ffd600;
+    color: #cc0b10;
+    border: 4px solid #cc0b10;
+}
+
+/* Step concluído */
+.step-circle.completed {
+    background-color: #cc0b10;
+    border: 4px solid #ffd600;
+    color: #ffd600;
+}
+
+/* Container dos botões no final */
+.container-buttons {
+    background-color: #cc0b10;
+    padding: 40px 20px;
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Botões */
+.btn-step {
     background-color: #ffd600;
     color: white;
     font-size: 16px;
     font-weight: 600;
     border: 2px solid #ebc403;
     border-radius: 4px;
-    padding: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 20px 50px;
+    cursor: pointer;
 }
 
-.btn-step:hover{
+.btn-step:hover {
     background-color: #ebc403 !important;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
     border: 2px solid #ffd600;
-    border-radius: 4px;
-    padding: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
-}
-
-.container-buttons{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #cc0b10;
-    padding: 40px;
-    border-top-left-radius: 60px;
-    border-top-right-radius: 60px;
-}
-
-.content-step{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background-color: #fffff8;
-    padding: 40px;
-    font-family: 'Montserrat', sans-serif; 
-    flex-direction: column;
 }

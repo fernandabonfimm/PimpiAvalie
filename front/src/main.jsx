@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Step1Validacao  from "./pages/step1Avaliacao";
 import LoginAdmin from '../src/pages/admin/login';
 import Dash from "./pages/admin/dash";
+import './index.css'; // Importa o CSS global
 const root = createRoot(document.getElementById("root"));
 
 root.render(
