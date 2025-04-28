@@ -11,7 +11,10 @@ const Step1Validacao = () => {
         <div className="container-img-avalie">
           <img src={Logo} alt="logo" />
         </div>
-        <StepsComponent onClickEnd={() => alert("Avaliação Concluída!")} />
+        <StepsComponent
+          onClickEnd={() => alert("Avaliação Concluída!")}
+          children={<></>}
+        />
       </Content>
     </>
   );
