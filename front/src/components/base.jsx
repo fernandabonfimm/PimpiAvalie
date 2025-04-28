@@ -64,9 +64,6 @@ function Base({ children }) {
           >
             {children}
           </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2025 Created by Pimpinella
-          </Footer>
         </Layout>
       </Layout>
     </div>

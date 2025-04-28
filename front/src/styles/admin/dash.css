@@ -21,12 +21,11 @@ h1 {
 }
 
 .card {
-  background-color: #2196f3;
   color: white;
   padding: 20px;
   border-radius: 15px;
   flex: 1 1 220px;
-  max-width: 250px;
+  max-width: 400px;
   min-height: 150px;
   display: flex;
   flex-direction: column;
@@ -36,8 +35,20 @@ h1 {
   position: relative;
 }
 
+.red{
+  background-color: #cc0b10;
+}
+
+.green{
+  background-color: #28a745;
+}
+
+.yellow{
+  background-color: #ffd600;
+}
+
 .card h2 {
-  font-size: 32px;
+  font-size: 26px;
   margin: 0;
 }
 
