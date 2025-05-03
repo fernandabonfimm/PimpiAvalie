@@ -56,6 +56,26 @@
     box-shadow: 0 0 5px rgba(227, 6, 19, 0.2);
 }
 
+ .form-avalie .ant-select-selector {
+    background-color: #f5f5f5 !important; /* garante o fundo cinza */
+    border: 2px solid #f9cb09 !important; /* garante a borda amarela */
+    border-radius: 12px;
+    padding: 12px 14px;
+    height: 52px !important; /* garante a altura como o input */
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;   
+    margin: auto;
+} 
+
+/* Remove a seta do Select */
+.form-avalie .ant-select-arrow {
+    display: none;
+  }   
+
 /* Ícones do lado esquerdo dos inputs */
 .form-avalie .ant-form-item {
     position: relative;

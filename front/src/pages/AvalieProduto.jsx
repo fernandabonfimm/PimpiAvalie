@@ -3,6 +3,10 @@ import { Layout, Form, Select, Rate, Input, Button } from "antd";
 import Logo from "../assets/images/logo3.png";
 import StepsComponent from "../components/steps";
 import "../styles/pages_avalie_produto.css";
+import { FaFolder, FaStar, FaIceCream } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -16,7 +20,7 @@ const AvalieProduto = () => {
     try {
       const values = await form.validateFields();
       console.log("Success:", values);
-
+  
       const response = await fetch("https://coloca-o-link-do-backend", {
         method: "POST",
         headers: {
@@ -24,47 +28,63 @@ const AvalieProduto = () => {
         },
         body: JSON.stringify({ ...values, avaliacao, comprariaNovamente }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Erro ao enviar dados");
       }
-
+  
       const data = await response.json();
       console.log("Resposta do backend:", data);
       alert("Avaliação enviada com sucesso!");
+      navigate("/Validacao"); // ⬅ redireciona aqui
     } catch (error) {
       console.error("Erro no envio:", error);
       alert("Erro ao enviar a avaliação. Tente novamente.");
     }
   };
+  
 
   return (
     <Content className="container-avalie-produto">
       <div className="container-img-avalie">
         <img src={Logo} alt="logo" />
+        <h2 className="titulo-avalie-produto">Avalie o Produto</h2>
       </div>
       <StepsComponent onClickEnd={handleSubmit}>
         <Form layout="vertical" form={form} className="form-avalie-produto">
-          <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
-            <Select placeholder="Escolha a categoria">
+        <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
+          <div className="input-wrapper">
+            <div className="input-icon">📁</div>
+            <Select placeholder="Escolha a categoria" bordered={false} className="custom-select">
               <Option value="sorvete">Sorvete</Option>
               <Option value="picolé">Picolé</Option>
             </Select>
-          </Form.Item>
+          </div>
+        </Form.Item>
 
-          <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
-            <Select placeholder="Escolha o produto">
+        <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
+          <div className="input-wrapper">
+            <div className="input-icon">⭐</div>
+            <Select placeholder="Escolha o produto" bordered={false} className="custom-select">
+              <Option value="sorvetedez">Sorvete 10 Litros</Option>
+              <Option value="sorvete320">Sorvete 320ml</Option>
+              <Option value="sorvete15">Sorvete 1,5 Litros</Option>
+              <Option value="sorvete2">Sorvete 2 Litros</Option>
+              <Option value="picole">Picolé</Option>
+            </Select>
+          </div>
+        </Form.Item>
+
+        <Form.Item name="sabor" rules={[{ required: true, message: "Escolha o sabor" }]}>
+          <div className="input-wrapper">
+            <div className="input-icon">🍦</div>
+            <Select placeholder="Escolha o sabor" bordered={false} className="custom-select">
               <Option value="chocolate">Chocolate</Option>
               <Option value="morango">Morango</Option>
             </Select>
-          </Form.Item>
+          </div>
+        </Form.Item>
 
-          <Form.Item name="sabor" rules={[{ required: true, message: "Escolha o sabor" }]}>
-            <Select placeholder="Escolha o sabor">
-              <Option value="tradicional">Tradicional</Option>
-              <Option value="zero">Zero Açúcar</Option>
-            </Select>
-          </Form.Item>
 
           <div className="container-avaliacao">
             <span>Avalie o produto:</span>
@@ -85,9 +105,6 @@ const AvalieProduto = () => {
             <Input.TextArea placeholder="Descrição da sua avaliação..." rows={4} />
           </Form.Item>
 
-          <Button type="primary" className="btn-submit" onClick={handleSubmit}>
-            Próximo passo
-          </Button>
         </Form>
       </StepsComponent>
     </Content>
