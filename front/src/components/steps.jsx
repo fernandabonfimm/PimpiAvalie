@@ -46,18 +46,22 @@ const StepsComponent = ({ onClickEnd, children }) => {
       </div>
 
       <div className="container-buttons">
-        {currentStep < steps.length - 1 ? (
-          <button onClick={nextStep} className="btn-step">
-            Próximo Passo
-          </button>
-        ) : (
-          <button onClick={onClickEnd} className="btn-step">
-            Concluir Avaliação
-          </button>
-        )}
+        
       </div>
     </div>
+
+    
   );
+  const navigate = useNavigate(); // Certifique-se de que useNavigate está declarado no componente
+
+<Button 
+  type="primary" 
+  onClick={() => navigate('/Validacao')} 
+  className="botao-validacao"
+>
+  Ir para Validação
+</Button>
+
 };
 
 export default StepsComponent;

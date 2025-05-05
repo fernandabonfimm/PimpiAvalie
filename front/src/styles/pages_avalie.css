@@ -134,4 +134,19 @@
         padding: 12px 14px;
         max-width: 600px;
     }
+
+    .botao-validacao {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      
+      .botao-validacao:hover {
+        background-color: #218838;
+      }
+      
 }

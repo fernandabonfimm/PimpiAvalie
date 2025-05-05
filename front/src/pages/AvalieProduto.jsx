@@ -6,8 +6,6 @@ import "../styles/pages_avalie_produto.css";
 import { FaFolder, FaStar, FaIceCream } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-
-
 const { Content } = Layout;
 const { Option } = Select;
 
@@ -15,12 +13,13 @@ const AvalieProduto = () => {
   const [form] = Form.useForm();
   const [avaliacao, setAvaliacao] = useState(4);
   const [comprariaNovamente, setComprariaNovamente] = useState(null);
+  const navigate = useNavigate(); // Declarado dentro do componente
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
       console.log("Success:", values);
-  
+
       const response = await fetch("https://coloca-o-link-do-backend", {
         method: "POST",
         headers: {
@@ -28,21 +27,20 @@ const AvalieProduto = () => {
         },
         body: JSON.stringify({ ...values, avaliacao, comprariaNovamente }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Erro ao enviar dados");
       }
-  
+
       const data = await response.json();
       console.log("Resposta do backend:", data);
       alert("Avaliação enviada com sucesso!");
-      navigate("/Validacao"); // ⬅ redireciona aqui
+      navigate("/Validacao");
     } catch (error) {
       console.error("Erro no envio:", error);
       alert("Erro ao enviar a avaliação. Tente novamente.");
     }
   };
-  
 
   return (
     <Content className="container-avalie-produto">
@@ -52,19 +50,14 @@ const AvalieProduto = () => {
       </div>
       <StepsComponent onClickEnd={handleSubmit}>
         <Form layout="vertical" form={form} className="form-avalie-produto">
-        <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
-          <div className="input-wrapper">
-            <div className="input-icon">📁</div>
+          <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
             <Select placeholder="Escolha a categoria" bordered={false} className="custom-select">
               <Option value="sorvete">Sorvete</Option>
               <Option value="picolé">Picolé</Option>
             </Select>
-          </div>
-        </Form.Item>
+          </Form.Item>
 
-        <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
-          <div className="input-wrapper">
-            <div className="input-icon">⭐</div>
+          <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
             <Select placeholder="Escolha o produto" bordered={false} className="custom-select">
               <Option value="sorvetedez">Sorvete 10 Litros</Option>
               <Option value="sorvete320">Sorvete 320ml</Option>
@@ -72,19 +65,14 @@ const AvalieProduto = () => {
               <Option value="sorvete2">Sorvete 2 Litros</Option>
               <Option value="picole">Picolé</Option>
             </Select>
-          </div>
-        </Form.Item>
+          </Form.Item>
 
-        <Form.Item name="sabor" rules={[{ required: true, message: "Escolha o sabor" }]}>
-          <div className="input-wrapper">
-            <div className="input-icon">🍦</div>
+          <Form.Item name="sabor" rules={[{ required: true, message: "Escolha o sabor" }]}>
             <Select placeholder="Escolha o sabor" bordered={false} className="custom-select">
               <Option value="chocolate">Chocolate</Option>
               <Option value="morango">Morango</Option>
             </Select>
-          </div>
-        </Form.Item>
-
+          </Form.Item>
 
           <div className="container-avaliacao">
             <span>Avalie o produto:</span>
@@ -105,6 +93,11 @@ const AvalieProduto = () => {
             <Input.TextArea placeholder="Descrição da sua avaliação..." rows={4} />
           </Form.Item>
 
+          <div className="container-botao-validacao">
+            <Button type="primary" onClick={() => navigate('/Validacao')} className="botao-validacao">
+              Ir para Validação
+            </Button>
+          </div>
         </Form>
       </StepsComponent>
     </Content>
