@@ -6,15 +6,9 @@ const Categoria = require('../models/categoria.model');
 
 exports.createStep1 = async (req, res) => {
   try {
-    const { idB2B, local, cidade, estado } = req.body;
-
-    const b2b = await b2bModel.findById(idB2B);
-    if (!b2b) {
-      return res.status(404).json({ message: 'B2B não encontrado' });
-    }
+    const { local, cidade, estado } = req.body;
 
     const novaAvaliacao = new AvaliacaoModel({
-      idB2B: b2b._id,
       local,
       cidade,
       estado
