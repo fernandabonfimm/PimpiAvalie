@@ -52,13 +52,29 @@ const Step1Validacao = () => {
             localCompra: "",
           }}
         >
+          <div
+            className="container-steps-avalie"
+            style={{
+              marginBottom: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <h1 className="title-steps-avalie" style={{ color: "#D0021B" }}>
+              Avaliação
+            </h1>
+            <p className="subtitle-steps-avalie" style={{ color: "#D0021B" }}>
+              Preencha os dados abaixo
+            </p>
+          </div>
           <Form.Item
             className="form-avalie"
             label="Nome"
             name="nome"
-            rules={[
-              { required: true, message: "Por favor, insira seu nome" },
-            ]}
+            rules={[{ required: true, message: "Por favor, insira seu nome" }]}
           >
             <Input placeholder="Nome" />
           </Form.Item>
@@ -79,7 +95,9 @@ const Step1Validacao = () => {
             className="form-avalie"
             label="Celular"
             name="celular"
-            rules={[{ required: true, message: "Por favor, insira seu celular" }]}
+            rules={[
+              { required: true, message: "Por favor, insira seu celular" },
+            ]}
           >
             <Input placeholder="Celular" />
           </Form.Item>
@@ -88,7 +106,12 @@ const Step1Validacao = () => {
             className="form-avalie"
             label="Local da Compra"
             name="localCompra"
-            rules={[{ required: true, message: "Por favor, informe o local da compra" }]}
+            rules={[
+              {
+                required: true,
+                message: "Por favor, informe o local da compra",
+              },
+            ]}
           >
             <Input placeholder="Local da Compra" />
           </Form.Item>
@@ -97,20 +120,37 @@ const Step1Validacao = () => {
             className="form-avalie"
             label="Cidade"
             name="cidade"
-            rules={[{ required: true, message: "Por favor, informe sua cidade" }]}
+            rules={[
+              { required: true, message: "Por favor, informe sua cidade" },
+            ]}
           >
             <Select placeholder="Selecione sua cidade">
               <Select.Option value="sao-paulo">São Paulo</Select.Option>
-              <Select.Option value="rio-de-janeiro">Rio de Janeiro</Select.Option>
-              <Select.Option value="belo-horizonte">Belo Horizonte</Select.Option>
+              <Select.Option value="rio-de-janeiro">
+                Rio de Janeiro
+              </Select.Option>
+              <Select.Option value="belo-horizonte">
+                Belo Horizonte
+              </Select.Option>
               <Select.Option value="curitiba">Curitiba</Select.Option>
               <Select.Option value="porto-alegre">Porto Alegre</Select.Option>
             </Select>
           </Form.Item>
 
           {/* Botão para concluir a avaliação */}
-          <Form.Item>
-            <Button type="primary" onClick={handleSubmit} className="botao-concluir">
+          <Form.Item style={{ marginTop: "2rem" }}>
+            <Button
+              type="primary"
+              onClick={handleSubmit}
+              className="botao-concluir"
+              style={{
+                display: "block",
+                margin: "0 auto",
+                height: "3rem",
+                fontWeight: "bold",
+                borderRadius: "1.5rem",
+              }}
+            >
               Concluir Avaliação
             </Button>
           </Form.Item>
