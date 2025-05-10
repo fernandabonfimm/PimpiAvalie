@@ -1,0 +1,146 @@
+📦 API - Documentação de Rotas
+Esta API permite gerenciar administradores, usuários B2B, categorias, produtos e avaliações em múltiplos passos.
+
+🔐 Admin
+1. Criar administrador
+POST localhost:8080/api/admin
+Body:
+json
+{
+  "email": "admin@email.com",
+  "senha": "123456"
+}
+
+2. Login do administrador
+POST localhost:8080/api/admin/login
+Body:
+json
+{
+  "email": "admin@email.com",
+  "senha": "123456"
+}
+
+3. Buscar admin por ID
+GET localhost:8080/api/admin/:id
+
+👥 B2B (Usuários)
+1. Criar usuário B2B
+POST /b2b
+Body:
+json
+{
+  "nome": "João da Silva",
+  "email": "joao@email.com",
+  "celular": "11999999999",
+  "cpf": "12345678900"
+}
+
+2. Listar todos os B2Bs
+GET localhost:8080/api/b2b
+Buscar B2B por ID
+
+3. Listar b2b por id
+GET /b2b/:id
+
+📂 Categoria
+1. Criar nova categoria
+POST localhost:8080/api/categoria
+Body:
+json
+{
+  "nome": "Eletrônicos",
+  "idAdmin": "id_do_admin"
+}
+
+2. Listar todas as categorias
+GET localhost:8080/api/categoria
+Buscar categoria por ID
+
+2. Listar categoria por id
+GET localhost:8080/api/categoria/:id
+
+📦 Produto
+1. Criar novo produto
+POST localhost:8080/api/produto
+Body:
+
+json
+{
+  "nome": "Fone de Ouvido",
+  "valor": "199.90",
+  "idCategoria": "id_da_categoria"
+}
+
+2. Listar todos os produtos
+GET localhost:8080/api/produto
+Buscar produto por ID
+
+2. Listar produto po id
+GET localhost:8080/api/produto/:id
+
+📝 Avaliação em 2 Etapas
+➤ Step 1: Criar avaliação (dados iniciais)
+POST localhost:8080/api/avaliacao/step1
+Body:
+
+json
+{
+  "idB2B": "id_do_b2b",
+  "local": "Loja X",
+  "cidade": "São Paulo",
+  "estado": "SP"
+}
+Resposta esperada:
+
+json
+Copiar
+Editar
+{
+  "_id": "id_da_avaliacao",
+  ...
+}
+💡 Frontend deve armazenar o _id retornado no localStorage para usar no Step 2:
+exemplo: localStorage.setItem('avaliacaoId', response.data._id);
+
+✅ Step 2: Finalizar avaliação (dados do produto, categoria e opinião)
+PUT localhost:8080/api/avaliacao/step2/:idAvaliacao
+Substitua :idAvaliacao pelo ID armazenado no step 1.
+
+Body:
+
+json
+{
+  "idProduto": "id_do_produto",
+  "idCategoria": "id_da_categoria",
+  "nivel": "5",
+  "comprariaNovamente": "sim",
+  "descricao": "Produto excelente, entrega rápida."
+}
+
+Exemplo de uso com Axios (Step 2):
+
+const idAvaliacao = localStorage.getItem('avaliacaoId');
+axios.put(`/avaliacao/step2/${idAvaliacao}`, {
+  idProduto: '...',
+  idCategoria: '...',
+  nivel: '5',
+  comprariaNovamente: 'sim',
+  descricao: 'Muito bom!'
+});
+
+📄 Outras rotas de Avaliação
+1. Listar todas as avaliações
+GET localhost:8080/api/avaliacao
+Buscar avaliação por ID
+
+2. listar avaliacao por id
+GET /avaliacao/:id
+
+✅ Checklist para o Frontend
+Criar usuário B2B ou usar um existente.
+
+Fazer o Step 1 com os dados iniciais da compra.
+
+Armazenar o id da avaliação no localStorage.
+
+Realizar o Step 2 com dados do produto, categoria e opinião final.
