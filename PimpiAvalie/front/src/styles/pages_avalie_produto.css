@@ -1,0 +1,159 @@
+/* Container Geral */
+.container-avalie-produto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background-color: #fffef5; /* tom de fundo claro */
+}
+
+/* Logo Centralizado */
+.container-img-avalie img {
+  width: 160px;
+  margin-bottom: 16px;
+}
+
+/* Formulário */
+.form-avalie-produto {
+  width: 100%;
+  max-width: 600px;
+  min-width: 300px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+
+/* Inputs e Selects */
+.form-avalie-produto .ant-select,
+.form-avalie-produto .ant-input {
+  width: 100%;
+  background-color: #f5f5f5;
+  border: 2px solid #f9cb09;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 16px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: border 0.3s;
+}
+
+.form-avalie-produto .ant-input:focus,
+.form-avalie-produto .ant-select:focus {
+  border-color: #e30613;
+  box-shadow: 0 0 5px rgba(227, 6, 19, 0.2);
+}
+
+/* Avaliação */
+.container-avaliacao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.container-avaliacao span {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Compraria Novamente */
+.container-compraria {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.container-compraria span {
+  font-size: 16px;
+}
+
+/* Botão */
+.btn-submit {
+  background-color: #f9cb09;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #e30613;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .form-avalie-produto {
+    padding: 0 16px;
+  }
+}
+
+.select-container {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 2px solid #f9cb09;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 16px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.select-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #f9cb09;
+}
+
+.select-container .ant-select {
+  flex: 1;
+}
+
+.select-container .ant-select-selector {
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border: 2px solid #f9cb09;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.input-icon {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #f9cb09;
+}
+
+.custom-select {
+  flex: 1;
+  background-color: transparent !important;
+  font-size: 16px;
+}
+
+.titulo-avalie-produto {
+  text-align: center;
+  color: #d0021b; /* tom de vermelho aproximado do da imagem */
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0 20px;
+  font-family: 'Poppins', sans-serif; /* escolha uma fonte elegante */
+
+}
+

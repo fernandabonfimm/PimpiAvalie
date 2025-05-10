@@ -1,0 +1,82 @@
+.header{
+    background-color: #f8f9fa;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.icon-bla{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #9a9a9a;
+    border-radius: 50%;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.logo img{
+    display: flex;
+    width: 40px;
+}
+
+.header-title h3{
+    font-size: 16px;
+    font-weight: 600;
+    color: #343a40;
+    line-height: 0px !important;
+    margin: 0;
+}
+
+.header-user{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.header-user span{
+    font-size: 12px;
+    font-weight: 400;
+    color: #343a40;
+}
+
+.sidebar{
+    background-color: #ffd500;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.sidebar_total{
+    background-color: #ffd500;
+}
+
+.ant-layout-sider .ant-layout-sider-trigger{
+    background-color: #cc0b10;
+}
+
+.ant-menu-light.ant-menu-inline .ant-menu-item{
+    color: white
+}
+
+.ant-menu-light.ant-menu-inline .ant-menu-item:hover{
+    background-color: #cc0b10;
+    color: white;
+}
+.ant-menu-light.ant-menu-inline .ant-menu-item-selected{
+    background-color: #cc0b10;
+    color: white;
+}
