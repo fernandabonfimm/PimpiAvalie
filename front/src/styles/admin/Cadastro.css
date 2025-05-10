@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+@import "tailwindcss";
+@import 'antd/dist/reset.css';
+
+:root {
+  --primary-color: #ffd600; /* Cor principal */
+  --secondary-color: #cc0b10; /* Cor secundária */
+  --background-color: #fffff8;
+  --text-color: #213547;
+
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  margin: 0;
+  padding: 0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: var(--secondary-color);
+}
+
+button {
+  border-radius: 8px;
+  border: 2px solid var(--primary-color);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+button:hover {
+  background-color: #ebc403;
+  border: 2px solid var(--secondary-color);
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.container-buttons {
+  background-color: var(--secondary-color);
+  padding: 40px 20px;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
