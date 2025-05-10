@@ -3,17 +3,17 @@ const mongoose = require("mongoose");
 const avaliacao = new mongoose.Schema(
   {
     idB2B: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "B2B",
       required: false,
     },
     idProduto: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Produto",
       required: false,
     },
     idCategoria: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Categoria",
       required: false,
     },
