@@ -150,3 +150,21 @@
       }
       
 }
+
+.place-self-c {
+    place-self: center;
+}
+
+.botao-concluir {
+    display: "block";
+    margin: "0 auto";
+    height: "3rem";
+    font-weight: "bold";
+    border-radius: "1.5rem";
+    background-color: #f9cb09;
+    border: none
+}
+
+.botao-concluir:hover{
+    background-color: #c8a300 !important;
+}

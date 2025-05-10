@@ -1,0 +1,69 @@
+/* Cores baseadas na marca */
+:root {
+  --vermelho: #c8102e;
+  --amarelo: #ffd300;
+  --branco: #ffffff;
+}
+
+/* Container geral */
+.container-avaliacoes {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: auto;
+  background-color: var(--branco);
+}
+
+/* Título */
+.titulo-avaliacoes {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--vermelho);
+  text-align: center;
+}
+
+/* Responsividade da tabela */
+.tabela-responsive {
+  overflow-x: auto;
+}
+
+/* Estilo dos botões */
+.botoes-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-vermelho {
+  background-color: var(--vermelho);
+  color: var(--branco);
+  border: none;
+}
+
+.btn-vermelho:hover {
+  background-color: #a00c22;
+  color: var(--branco);
+}
+
+.btn-amarelo {
+  background-color: var(--amarelo);
+  color: #000;
+  border: none;
+}
+
+.btn-amarelo:hover {
+  background-color: #e6c100;
+  color: #000;
+}
+
+/* Responsividade geral */
+@media (max-width: 768px) {
+  .titulo-avaliacoes {
+    font-size: 1.5rem;
+  }
+
+  .botoes-acoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

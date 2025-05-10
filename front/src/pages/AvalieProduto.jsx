@@ -50,15 +50,29 @@ const AvalieProduto = () => {
       </div>
       <StepsComponent onClickEnd={handleSubmit}>
         <Form layout="vertical" form={form} className="form-avalie-produto">
-          <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
-            <Select placeholder="Escolha a categoria" bordered={false} className="custom-select">
+          <Form.Item
+            name="categoria"
+            rules={[{ required: true, message: "Escolha uma categoria" }]}
+          >
+            <Select
+              placeholder="Escolha a categoria"
+              bordered={false}
+              className="custom-select"
+            >
               <Option value="sorvete">Sorvete</Option>
               <Option value="picolé">Picolé</Option>
             </Select>
           </Form.Item>
 
-          <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
-            <Select placeholder="Escolha o produto" bordered={false} className="custom-select">
+          <Form.Item
+            name="produto"
+            rules={[{ required: true, message: "Escolha o produto" }]}
+          >
+            <Select
+              placeholder="Escolha o produto"
+              bordered={false}
+              className="custom-select"
+            >
               <Option value="sorvetedez">Sorvete 10 Litros</Option>
               <Option value="sorvete320">Sorvete 320ml</Option>
               <Option value="sorvete15">Sorvete 1,5 Litros</Option>
@@ -67,8 +81,15 @@ const AvalieProduto = () => {
             </Select>
           </Form.Item>
 
-          <Form.Item name="sabor" rules={[{ required: true, message: "Escolha o sabor" }]}>
-            <Select placeholder="Escolha o sabor" bordered={false} className="custom-select">
+          <Form.Item
+            name="sabor"
+            rules={[{ required: true, message: "Escolha o sabor" }]}
+          >
+            <Select
+              placeholder="Escolha o sabor"
+              bordered={false}
+              className="custom-select"
+            >
               <Option value="chocolate">Chocolate</Option>
               <Option value="morango">Morango</Option>
             </Select>
@@ -81,20 +102,47 @@ const AvalieProduto = () => {
 
           <div className="container-compraria">
             <span>Você compraria novamente?</span>
-            <Button type={comprariaNovamente === "sim" ? "primary" : "default"} onClick={() => setComprariaNovamente("sim")}>
+            <Button
+              type={comprariaNovamente === "sim" ? "primary" : "default"}
+              onClick={() => setComprariaNovamente("sim")}
+            >
               Sim
             </Button>
-            <Button type={comprariaNovamente === "não" ? "primary" : "default"} onClick={() => setComprariaNovamente("não")}>
+            <Button
+              type={comprariaNovamente === "não" ? "primary" : "default"}
+              danger
+              onClick={() => setComprariaNovamente("não")}
+            >
               Não
             </Button>
           </div>
 
-          <Form.Item name="descricao" rules={[{ required: true, message: "Descreva sua avaliação" }]}>
-            <Input.TextArea placeholder="Descrição da sua avaliação..." rows={4} />
+          <Form.Item
+            name="descricao"
+            rules={[{ required: true, message: "Descreva sua avaliação" }]}
+          >
+            <Input.TextArea
+              placeholder="Descrição da sua avaliação..."
+              rows={4}
+            />
           </Form.Item>
 
-          <div className="container-botao-validacao">
-            <Button type="primary" onClick={() => navigate('/Validacao')} className="botao-validacao">
+          <div
+            className="container-botao-validacao"
+            style={{ marginBottom: "2rem" }}
+          >
+            <Button
+              type="primary"
+              onClick={() => navigate("/Validacao")}
+              className="botao-validacao botao-concluir"
+              style={{
+                display: "block",
+                margin: "0 auto",
+                height: "3rem",
+                fontWeight: "bold",
+                borderRadius: "1.5rem",
+              }}
+            >
               Ir para Validação
             </Button>
           </div>
