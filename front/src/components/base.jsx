@@ -1,33 +1,38 @@
 import React, { useState } from "react";
 import "../styles/admin/base.css";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu } from "antd";
 import Logo from "../assets/images/logo3.png";
 import {
-    StarOutlined,
-    FileOutlined,
-    PieChartOutlined,
-    TeamOutlined,
-    UserOutlined,
-  } from '@ant-design/icons';
+  StarOutlined,
+  PieChartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom"; // <-- Importa useNavigate
 
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-    };
-  }
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
 
 const items = [
-  getItem("Dashboard", "1", <PieChartOutlined />),
-  getItem("Avaliações", "2", <StarOutlined />),
+  getItem("Dashboard", "dashboard", <PieChartOutlined />),
+  getItem("Avaliações", "avaliacoes", <StarOutlined />),
 ];
 
 function Base({ children }) {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate(); // <-- Inicializa o hook
+
+  const handleMenuClick = ({ key }) => {
+    navigate(`/admin/${key}`);
+  };
+
   return (
     <div style={{ minHeight: "100vh" }}>
       <Header className="header">
@@ -49,10 +54,16 @@ function Base({ children }) {
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
-            className="sidebar_total"
+          className="sidebar_total"
         >
-          <div className="demo-logo-vertical"/>
-          <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} className="sidebar"/>
+          <div className="demo-logo-vertical" />
+          <Menu
+            defaultSelectedKeys={["dashboard"]}
+            mode="inline"
+            items={items}
+            onClick={handleMenuClick} // <-- Aqui está a navegação
+            className="sidebar"
+          />
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content

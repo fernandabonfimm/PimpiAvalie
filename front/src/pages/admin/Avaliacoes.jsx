@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input, message } from "antd";
 import "../../styles/admin/avaliacoes.css";
+import Base from "../../components/base";
 
 const Avaliacoes = () => {
   const [dataSource, setDataSource] = useState([
@@ -42,7 +43,7 @@ const Avaliacoes = () => {
     Modal.confirm({
       title: "Você tem certeza que deseja deletar?",
       onOk: () => {
-        setDataSource(prev => prev.filter(item => item.key !== key));
+        setDataSource((prev) => prev.filter((item) => item.key !== key));
         message.success("Deletado com sucesso");
       },
     });
@@ -50,9 +51,9 @@ const Avaliacoes = () => {
 
   const handleOk = () => {
     if (isEditing) {
-      form.validateFields().then(values => {
-        setDataSource(prev =>
-          prev.map(item =>
+      form.validateFields().then((values) => {
+        setDataSource((prev) =>
+          prev.map((item) =>
             item.key === selectedRecord.key ? { ...item, ...values } : item
           )
         );
@@ -111,50 +112,75 @@ const Avaliacoes = () => {
   ];
 
   return (
-    <div className="container-avaliacoes">
-      <h1 className="titulo-avaliacoes">Painel de Avaliações</h1>
-      <div className="tabela-responsive">
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={{ pageSize: 5 }}
-          scroll={{ x: true }}
-        />
-      </div>
-
-      <Modal
-        title={isEditing ? "Editar Avaliação" : "Visualizar Avaliação"}
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText={isEditing ? "Salvar" : "Fechar"}
-        cancelButtonProps={{ style: { display: isEditing ? "inline" : "none" } }}
-      >
-        {isEditing ? (
-          <Form form={form} layout="vertical">
-            <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="email" label="E-mail" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="localCompra" label="Local da Compra">
-              <Input />
-            </Form.Item>
-            <Form.Item name="cidade" label="Cidade">
-              <Input />
-            </Form.Item>
-          </Form>
-        ) : selectedRecord && (
-          <div>
-            <p><strong>Nome:</strong> {selectedRecord.nome}</p>
-            <p><strong>Email:</strong> {selectedRecord.email}</p>
-            <p><strong>Local da Compra:</strong> {selectedRecord.localCompra}</p>
-            <p><strong>Cidade:</strong> {selectedRecord.cidade}</p>
+    <Base
+      children={
+        <div className="dashboard-container">
+          <h1 className="title-principal">Avaliações</h1>
+          <div className="tabela-responsive">
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              pagination={{ pageSize: 5 }}
+              scroll={{ x: true }}
+            />
           </div>
-        )}
-      </Modal>
-    </div>
+
+          <Modal
+            title={isEditing ? "Editar Avaliação" : "Visualizar Avaliação"}
+            open={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okText={isEditing ? "Salvar" : "Fechar"}
+            cancelButtonProps={{
+              style: { display: isEditing ? "inline" : "none" },
+            }}
+          >
+            {isEditing ? (
+              <Form form={form} layout="vertical">
+                <Form.Item
+                  name="nome"
+                  label="Nome"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  label="E-mail"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="localCompra" label="Local da Compra">
+                  <Input />
+                </Form.Item>
+                <Form.Item name="cidade" label="Cidade">
+                  <Input />
+                </Form.Item>
+              </Form>
+            ) : (
+              selectedRecord && (
+                <div>
+                  <p>
+                    <strong>Nome:</strong> {selectedRecord.nome}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {selectedRecord.email}
+                  </p>
+                  <p>
+                    <strong>Local da Compra:</strong>{" "}
+                    {selectedRecord.localCompra}
+                  </p>
+                  <p>
+                    <strong>Cidade:</strong> {selectedRecord.cidade}
+                  </p>
+                </div>
+              )
+            )}
+          </Modal>
+        </div>
+      }
+    ></Base>
   );
 };
 
