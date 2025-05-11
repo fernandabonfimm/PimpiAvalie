@@ -10,6 +10,7 @@ import './index.css'; // Importa o CSS global
 import "./index.css"; // Importa o CSS global
 import AvalieProduto from "./pages/AvalieProduto";
 import Cadastro from "./pages/admin/cadastro"; // Corrigida a importação
+import SuccessPage from "./pages/sucesso";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -22,7 +23,9 @@ root.render(
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dash />} />
         <Route path="/admin/Avaliacoes" element={<Avaliacoes/>} />
-
+        <Route path="/admin/cadastro" element={<Cadastro />} />
+        <Route path="/sucesso" element={<SuccessPage />} />
+        {/* Adicione outras rotas conforme necessário */}
       </Routes>
     </Router>
   </StrictMode>

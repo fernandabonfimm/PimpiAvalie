@@ -3,36 +3,52 @@ import { Layout, Form, Input, Button, Select } from "antd";
 import Logo from "../assets/images/logo3.png";
 import StepsComponent from "../components/steps";
 import "../styles/pages_avalie.css";
+import { api } from "../../api"; // <-- importe o axios configurado
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // <-- importe o sweetalert2
 
 const { Content } = Layout;
 
 const Step1Validacao = () => {
   const [form] = Form.useForm();
-
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      console.log("Success:", values);
 
-      // Envio dos dados para o backend
-      const response = await fetch("https://coloca-o-link-do-backend", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const payload = {
+        nome: values.nome,
+        email: values.email,
+        telefone: values.telefone,
+        local: values.local,
+        cidade: values.cidade,
+        estado: "SP", // Mude conforme a lógica
+      };
 
-      if (!response.ok) {
-        throw new Error("Erro ao enviar dados");
+      // Envia a avaliação para o backend
+      const response = await api.post("/avaliacao/step1", payload);
+      console.log("Resposta do backend:", response.data);
+      console.log("Status da resposta:", response.status);
+      if (response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Avaliação Enviada!",
+          text: "Sua avaliação foi enviada com sucesso.",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          // Redireciona para a página de sucesso
+          navigate("/sucesso");
+        });
       }
-
-      const data = await response.json();
-      console.log("Resposta do backend:", data);
-      alert("Avaliação enviada com sucesso!");
     } catch (error) {
       console.error("Erro no envio:", error);
-      alert("Erro ao enviar a avaliação. Tente novamente.");
+      // Em caso de erro, exibe um alerta de erro
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Houve um erro ao enviar sua avaliação. Tente novamente.",
+        confirmButtonText: "Ok",
+      });
     }
   };
 
@@ -46,10 +62,8 @@ const Step1Validacao = () => {
           layout="vertical"
           form={form}
           initialValues={{
-            nome: "",
-            email: "",
-            celular: "",
-            localCompra: "",
+            local: "",
+            cidade: "",
           }}
         >
           <div
@@ -70,42 +84,53 @@ const Step1Validacao = () => {
               Preencha os dados abaixo
             </p>
           </div>
+
           <Form.Item
             className="form-avalie"
-            label="Nome"
+            label="Seu nome completo"
             name="nome"
-            rules={[{ required: true, message: "Por favor, insira seu nome" }]}
+            rules={[
+              {
+                required: true,
+                message: "Por favor, informe o seu nome completo",
+              },
+            ]}
           >
-            <Input placeholder="Nome" />
+            <Input placeholder="nome completo..." />
           </Form.Item>
 
           <Form.Item
             className="form-avalie"
-            label="Email"
+            label="Seu melhor e-mail"
             name="email"
             rules={[
-              { required: true, message: "Por favor, insira seu email" },
-              { type: "email", message: "Por favor, insira um email válido" },
+              {
+                required: true,
+                message: "Por favor, informe o seu melhor e-mail",
+              },
             ]}
           >
-            <Input placeholder="Email" />
+            <Input placeholder="exemplo: email@email.com..." />
           </Form.Item>
 
           <Form.Item
             className="form-avalie"
-            label="Celular"
-            name="celular"
+            label="Seu telefone ou WhatsApp"
+            name="telefone"
             rules={[
-              { required: true, message: "Por favor, insira seu celular" },
+              {
+                required: true,
+                message: "Por favor, informe o seu telefone ou WhatsApp",
+              },
             ]}
           >
-            <Input placeholder="Celular" />
+            <Input placeholder="digite o telefone ou whatsapp..." />
           </Form.Item>
 
           <Form.Item
             className="form-avalie"
             label="Local da Compra"
-            name="localCompra"
+            name="local"
             rules={[
               {
                 required: true,
@@ -124,17 +149,7 @@ const Step1Validacao = () => {
               { required: true, message: "Por favor, informe sua cidade" },
             ]}
           >
-            <Select placeholder="Selecione sua cidade">
-              <Select.Option value="sao-paulo">São Paulo</Select.Option>
-              <Select.Option value="rio-de-janeiro">
-                Rio de Janeiro
-              </Select.Option>
-              <Select.Option value="belo-horizonte">
-                Belo Horizonte
-              </Select.Option>
-              <Select.Option value="curitiba">Curitiba</Select.Option>
-              <Select.Option value="porto-alegre">Porto Alegre</Select.Option>
-            </Select>
+            <Input placeholder="Digite sua cidade" />
           </Form.Item>
 
           {/* Botão para concluir a avaliação */}
