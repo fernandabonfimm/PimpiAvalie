@@ -28,11 +28,20 @@ const items = [
 function Base({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate(); // <-- Inicializa o hook
-
+  const [nome, setNome] = useState("");
   const handleMenuClick = ({ key }) => {
     navigate(`/admin/${key}`);
   };
 
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem("@admUser");
+    if (!storedUser) {
+      navigate("/admin/login");
+    } else {
+      const user = JSON.parse(storedUser);
+      setNome(user.nome);
+    }
+  }, [navigate]);
   return (
     <div style={{ minHeight: "100vh" }}>
       <Header className="header">
@@ -43,7 +52,7 @@ function Base({ children }) {
           </div>
         </div>
         <div className="header-user">
-          <span>Olá, Fulinho de Tal</span>
+          <span>Olá, {nome}</span>
           <div className="icon-bla">
             <UserOutlined style={{ fontSize: "15px", color: "white" }} />
           </div>
