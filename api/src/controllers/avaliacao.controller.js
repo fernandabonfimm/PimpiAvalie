@@ -88,3 +88,159 @@ exports.getAvaliacaoById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching Avaliacao', error });
     }
 }
+
+exports.getQuantityOfGoodAvaliationsByNivel = async (req, res) => {
+  try {
+    const count = await AvaliacaoModel.countDocuments({
+      $expr: {
+        $and: [
+          { $gte: [{ $toInt: "$nivel" }, 3] },
+          { $gte: [{ $toInt: "$nivel" }, 4] },
+          { $lte: [{ $toInt: "$nivel" }, 5] }
+        ]
+      }
+    });
+
+    res.status(200).json({ quantidade: count });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao contar avaliações boas', error });
+  }
+};
+
+
+exports.getQuantityOfBadAvaliationsByNivel = async (req, res) => {
+  try {
+    const count = await AvaliacaoModel.countDocuments({
+      $expr: {
+        $and: [
+          { $lt: [{ $toInt: "$nivel" }, 3] },
+          { $lt: [{ $toInt: "$nivel" }, 4] },
+          { $lt: [{ $toInt: "$nivel" }, 5] }
+        ]
+      }
+    });
+
+    res.status(200).json({ quantidade: count });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao contar avaliações ruins', error });
+  }
+};
+
+
+exports.getQuantityOfBadAvaliationsByNivel = async (req, res) => {
+  try {
+    const count = await AvaliacaoModel.countDocuments({
+      $expr: {
+        $and: [
+          { $lt: [{ $toInt: "$nivel" }, 0] },
+          { $lt: [{ $toInt: "$nivel" }, 1] },
+          { $lt: [{ $toInt: "$nivel" }, 2] }
+        ]
+      }
+    });
+
+    res.status(200).json({ quantidade: count });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao contar avaliações ruins', error });
+  }
+};
+
+exports.getQuantityOfAllAvaliations = async (req, res) => {
+  try {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const count = await AvaliacaoModel.countDocuments({
+      createdAt: { $gte: thirtyDaysAgo }
+    });
+
+    res.status(200).json({ quantidade: count });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao contar avaliações dos últimos 30 dias', error });
+  }
+};
+
+exports.getAvaliacaoTrendsComprariaNovamente = async (req, res) => {
+  try {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const data = await AvaliacaoModel.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: thirtyDaysAgo },
+          comprariaNovamente: { $in: ["sim", "não"] }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            day: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            resposta: "$comprariaNovamente"
+          },
+          total: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: "$_id.day",
+          respostas: {
+            $push: {
+              resposta: "$_id.resposta",
+              total: "$total"
+            }
+          }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          sim: {
+            $let: {
+              vars: {
+                matched: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: "$respostas",
+                        as: "r",
+                        cond: { $eq: ["$$r.resposta", "sim"] }
+                      }
+                    }, 0
+                  ]
+                }
+              },
+              in: { $ifNull: ["$$matched.total", 0] }
+            }
+          },
+          nao: {
+            $let: {
+              vars: {
+                matched: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: "$respostas",
+                        as: "r",
+                        cond: { $eq: ["$$r.resposta", "não"] }
+                      }
+                    }, 0
+                  ]
+                }
+              },
+              in: { $ifNull: ["$$matched.total", 0] }
+            }
+          }
+        }
+      }
+    ]);
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao gerar dados do gráfico', error });
+  }
+};
