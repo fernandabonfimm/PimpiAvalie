@@ -23,6 +23,7 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem("Dashboard", "dashboard", <PieChartOutlined />),
   getItem("Avaliações", "avaliacoes", <StarOutlined />),
+  getItem("Cadastro", "cadastro", <StarOutlined/>),
 ];
 
 function Base({ children }) {
