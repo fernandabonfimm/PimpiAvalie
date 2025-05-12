@@ -56,8 +56,12 @@ const AvalieProduto = () => {
 
       // Envia a avaliação para o backend
       const getId = localStorage.getItem("idAvaliacao");
-      if (getId) {
-        const response = await api.put(`avaliacao/step2/${getId}`, payload);
+      // o id tem que fazrer parse e string
+      const parsedId = JSON.parse(getId);
+      console.log("ID da avaliação:", parsedId);
+      // Verifica se o ID existe antes de enviar a requisição
+      if (parsedId) {
+        const response = await api.put(`avaliacao/step2/${parsedId}`, payload);
         console.log("Resposta do backend:", response.data);
         console.log("Status da resposta:", response.status);
         if (response.status === 201) {
