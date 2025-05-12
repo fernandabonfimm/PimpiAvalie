@@ -11,20 +11,6 @@ exports.createAdmin = async (req, res) => {
   }
 };
 
-exports.loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const admin = await AdminModel.findOne({ email });
-    if (!admin) {
-      return res.status(401).json({ message: "Email ou senha inválidos" });
-    }
-    return res.status(200).json({ message: "Login successful", email });
-  } catch (error) {
-    res.status(500).json({ message: "Error logging in admin", error });
-  }
-};
-
 exports.getIdById = async (req, res) => {
   try {
     const admin = await AdminModel.findById(req.params.id);
@@ -34,5 +20,19 @@ exports.getIdById = async (req, res) => {
     res.status(200).json(admin);
   } catch (error) {
     res.status(500).json({ message: "Error fetching admin", error });
+  }
+};
+
+exports.loginAdmin = async (req, res) => {
+  const { email, senha } = req.body;
+
+  try {
+    const admin = await AdminModel.find({ email: email });
+    if (admin.length === 0) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    res.status(200).json({ message: "Login successful", admin });
+  } catch (error) {
+    res.status(500).json({ message: "Error logging in", error });
   }
 };

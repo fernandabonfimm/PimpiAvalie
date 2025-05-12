@@ -9,45 +9,18 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setsenha] = useState("");
   const navigate = useNavigate();
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const validatesenha = (senha) => {
-    const regex =
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
-    return regex.test(senha);
-  };
 
   const handleLogin = async () => {
-    if (!validateEmail(email)) {
-      Swal.fire({
-        icon: "error",
-        title: "Email inválido",
-        text: "Por favor, insira um e-mail válido.",
-      });
-      return;
-    }
-
-    if (!validatesenha(senha)) {
-      Swal.fire({
-        icon: "error",
-        title: "senha inválida",
-        html: "A senha deve ter no mínimo 8 caracteres,<br/>1 letra maiúscula, 1 número e 1 caractere especial.",
-      });
-      return;
-    }
 
     const payload = {
       email: email,
       senha: senha,
     };
 
-    const response = await api.post("avaliacao/step1", payload);
+    const response = await api.post("admin/login", payload);
     console.log("Resposta do backend:", response.data);
-    if (response.status === 201) {
-      localStorage.setItem("@admUser", response.data);
+    if (response.status === 201 || response.status === 200) {
+      localStorage.setItem("@admUser", JSON.stringify(response.data.admin));
       Swal.fire({
         icon: "success",
         title: "Login bem-sucedido!",

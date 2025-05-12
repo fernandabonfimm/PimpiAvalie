@@ -34,12 +34,11 @@ function Base({ children }) {
   };
 
   React.useEffect(() => {
-    const storedUser = localStorage.getItem("@admUser");
+    const storedUser = JSON.parse(localStorage.getItem("@admUser") || "null");
     if (!storedUser) {
       navigate("/admin/login");
     } else {
-      const user = JSON.parse(storedUser);
-      setNome(user.nome);
+      setNome(String(storedUser.nome));
     }
   }, [navigate]);
   return (

@@ -10,6 +10,10 @@ const admin = new mongoose.Schema(
       type: String,
       required: true,
     },
+    nome: {
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true }
 );

@@ -64,40 +64,6 @@ const Dash = () => {
     }
     getAvaliacaoTrends();
   }, []);
-  // Criando os dados para os 30 dias
-  const data = [
-    { day: "1", boas: 5, ruins: 2 },
-    { day: "2", boas: 6, ruins: 3 },
-    { day: "3", boas: 8, ruins: 1 },
-    { day: "4", boas: 7, ruins: 4 },
-    { day: "5", boas: 9, ruins: 2 },
-    { day: "6", boas: 10, ruins: 1 },
-    { day: "7", boas: 4, ruins: 5 },
-    { day: "8", boas: 6, ruins: 3 },
-    { day: "9", boas: 8, ruins: 2 },
-    { day: "10", boas: 7, ruins: 3 },
-    { day: "11", boas: 6, ruins: 4 },
-    { day: "12", boas: 5, ruins: 5 },
-    { day: "13", boas: 9, ruins: 1 },
-    { day: "14", boas: 8, ruins: 2 },
-    { day: "15", boas: 7, ruins: 3 },
-    { day: "16", boas: 6, ruins: 4 },
-    { day: "17", boas: 10, ruins: 1 },
-    { day: "18", boas: 5, ruins: 5 },
-    { day: "19", boas: 9, ruins: 2 },
-    { day: "20", boas: 7, ruins: 3 },
-    { day: "21", boas: 8, ruins: 2 },
-    { day: "22", boas: 6, ruins: 4 },
-    { day: "23", boas: 7, ruins: 3 },
-    { day: "24", boas: 9, ruins: 1 },
-    { day: "25", boas: 5, ruins: 5 },
-    { day: "26", boas: 6, ruins: 4 },
-    { day: "27", boas: 7, ruins: 3 },
-    { day: "28", boas: 8, ruins: 2 },
-    { day: "29", boas: 6, ruins: 4 },
-    { day: "30", boas: 5, ruins: 5 },
-  ];
-
   return (
     <Base
       children={
@@ -106,22 +72,22 @@ const Dash = () => {
 
           <div className="cards-container">
             <div className="card green">
-              <h2>{quantityOfGoodReviews}</h2>
+              <h2>{quantityOfGoodReviews ? quantityOfGoodReviews : 0}</h2>
               <p>Avaliações Boas</p>
             </div>
             <div className="card red">
-              <h2>{quantityOfBadReviews}</h2>
+              <h2>{quantityOfBadReviews ? quantityOfBadReviews : 0}</h2>
               <p>Avaliações Ruins</p>
             </div>
             <div className="card yellow">
-              <h2>{quantityOfReviews}</h2>
+              <h2>{quantityOfReviews ? quantityOfReviews : 0 }</h2>
               <p>Avaliações (30 dias)</p>
             </div>
           </div>
 
           <div id="container" style={{ width: "100%", height: "400px" }}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart
+              {/* <LineChart
                 data={dataChartTrends}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
@@ -137,7 +103,7 @@ const Dash = () => {
                   activeDot={{ r: 8 }}
                 />
                 <Line type="monotone" dataKey="ruins" stroke="#ff0000" />
-              </LineChart>
+              </LineChart> */}
             </ResponsiveContainer>
           </div>
         </div>
