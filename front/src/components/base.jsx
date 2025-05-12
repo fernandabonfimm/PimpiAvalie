@@ -1,34 +1,26 @@
 import React, { useState } from "react";
 import "../styles/admin/base.css";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import Logo from "../assets/images/logo3.png";
-import {
-  StarOutlined,
-  PieChartOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // <-- Importa useNavigate
+import { StarOutlined, PieChartOutlined, UserOutlined } from "@ant-design/icons";
+import { useNavigate, useLocation } from "react-router-dom"; // <-- Importa useLocation para identificar a página ativa
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
+function getItem(label, key, icon) {
+  return { key, icon, label };
 }
 
 const items = [
   getItem("Dashboard", "dashboard", <PieChartOutlined />),
   getItem("Avaliações", "avaliacoes", <StarOutlined />),
-  getItem("Cadastro", "cadastro", <StarOutlined/>),
+  getItem("Cadastro", "cadastro", <StarOutlined />),
 ];
 
 function Base({ children }) {
   const [collapsed, setCollapsed] = useState(false);
-  const navigate = useNavigate(); // <-- Inicializa o hook
+  const navigate = useNavigate();
+  const location = useLocation(); // <-- Obtém a rota atual
 
   const handleMenuClick = ({ key }) => {
     navigate(`/admin/${key}`);
@@ -51,31 +43,18 @@ function Base({ children }) {
         </div>
       </Header>
       <Layout>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-          className="sidebar_total"
-        >
+        <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} className="sidebar_total">
           <div className="demo-logo-vertical" />
           <Menu
-            defaultSelectedKeys={["dashboard"]}
+            selectedKeys={[location.pathname.split("/").pop()]} // <-- Define o item ativo com base na URL
             mode="inline"
             items={items}
-            onClick={handleMenuClick} // <-- Aqui está a navegação
+            onClick={handleMenuClick}
             className="sidebar"
           />
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            {children}
-          </Content>
+          <Content style={{ padding: 24, margin: 0, minHeight: 280 }}>{children}</Content>
         </Layout>
       </Layout>
     </div>
