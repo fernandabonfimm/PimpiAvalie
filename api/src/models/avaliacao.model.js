@@ -12,6 +12,18 @@ const avaliacao = new mongoose.Schema(
       ref: "Categoria",
       required: false,
     },
+    nome:{
+      type: String,
+      required: false,
+    },
+    email:{
+      type: String,
+      required: false,
+    },
+    telefone:{
+      type: String,
+      required: false,
+    },
     local: {
       type: String,
       required: false,

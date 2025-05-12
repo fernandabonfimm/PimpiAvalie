@@ -2,23 +2,25 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import "../../styles/admin/login.css"; // Importa o CSS
 import { Image } from "antd";
-import logo from "../../assets/images/logo3.png"
-
+import logo from "../../assets/images/logo3.png";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setsenha] = useState("");
-
+  const navigate = useNavigate();
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
   const validatesenha = (senha) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+    const regex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
     return regex.test(senha);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!validateEmail(email)) {
       Swal.fire({
         icon: "error",
@@ -37,14 +39,30 @@ export default function Login() {
       return;
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Login realizado com sucesso!",
-      showConfirmButton: false,
-      timer: 2000,
-    }).then(() => {
-      window.location.href = "/dashboard"; // Redireciona após sucesso
-    });
+    const payload = {
+      email: email,
+      senha: senha,
+    };
+
+    const response = await api.post("avaliacao/step1", payload);
+    console.log("Resposta do backend:", response.data);
+    if (response.status === 201) {
+      localStorage.setItem("@admUser", response.data);
+      Swal.fire({
+        icon: "success",
+        title: "Login bem-sucedido!",
+        text: "Você foi autenticado com sucesso.",
+      }).then(() => {
+        // Redireciona para a página de dashboard
+        navigate("/admin/dashboard");
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Erro no login",
+        text: "E-mail ou senha incorretos.",
+      });
+    }
   };
 
   return (
@@ -78,21 +96,12 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="senha"
           placeholder="senha"
           className="login-input"
+          type="password"
           value={senha}
           onChange={(e) => setsenha(e.target.value)}
         />
-
-        <div className="login-options">
-          <label className="Lembre de mim">
-            <input type="checkbox" /> Lembre de mim
-          </label>
-          <a href="#" className="Esqueceu sua senha">
-            Esqueceu sua senha?
-          </a>
-        </div>
 
         <button className="login-button" onClick={handleLogin}>
           LOGIN

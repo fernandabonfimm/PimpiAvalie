@@ -26,10 +26,12 @@ const Step1Validacao = () => {
       };
 
       // Envia a avaliação para o backend
-      const response = await api.post("/avaliacao/step1", payload);
+      const response = await api.post("avaliacao/step1", payload);
       console.log("Resposta do backend:", response.data);
       console.log("Status da resposta:", response.status);
       if (response.status === 201) {
+        // Armazena o ID da avaliação no localStorage
+        localStorage.setItem("idAvaliacao", response.data._id);
         Swal.fire({
           icon: "success",
           title: "Avaliação Enviada!",
