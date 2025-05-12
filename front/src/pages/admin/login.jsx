@@ -3,11 +3,12 @@ import Swal from "sweetalert2";
 import "../../styles/admin/login.css"; // Importa o CSS
 import { Image } from "antd";
 import logo from "../../assets/images/logo3.png";
-
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setsenha] = useState("");
-
+  const navigate = useNavigate();
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -47,14 +48,13 @@ export default function Login() {
     console.log("Resposta do backend:", response.data);
     if (response.status === 201) {
       localStorage.setItem("@admUser", response.data);
-
       Swal.fire({
         icon: "success",
         title: "Login bem-sucedido!",
         text: "Você foi autenticado com sucesso.",
       }).then(() => {
         // Redireciona para a página de dashboard
-        window.location.href = "/admin/dashboard";
+        navigate("/admin/dashboard");
       });
     } else {
       Swal.fire({
@@ -96,9 +96,9 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="senha"
           placeholder="senha"
           className="login-input"
+          type="password"
           value={senha}
           onChange={(e) => setsenha(e.target.value)}
         />
