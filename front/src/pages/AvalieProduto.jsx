@@ -13,32 +13,76 @@ const AvalieProduto = () => {
   const [form] = Form.useForm();
   const [avaliacao, setAvaliacao] = useState(4);
   const [comprariaNovamente, setComprariaNovamente] = useState(null);
-  const navigate = useNavigate(); // Declarado dentro do componente
+  const navigate = useNavigate();
+  const [allCategories, setAllCategories] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get("categoria");
+        setAllCategories(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get("produto");
+        setAllProducts(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+      }
+    };
+
+    fetchCategories();
+    fetchProducts();
+  }, []);
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      console.log("Success:", values);
 
-      const response = await fetch("https://coloca-o-link-do-backend", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...values, avaliacao, comprariaNovamente }),
-      });
+      const payload = {
+        nivel: avaliacao,
+        comprariaNovamente: comprariaNovamente,
+        descricao: values.descricao,
+        idProduto: selectedProduct,
+        idCategoria: selectedCategory,
+      };
 
-      if (!response.ok) {
-        throw new Error("Erro ao enviar dados");
+      // Envia a avaliação para o backend
+      const getId = localStorage.getItem("idAvaliacao");
+      if (getId) {
+        const response = await api.put(`avaliacao/step2/${getId}`, payload);
+        console.log("Resposta do backend:", response.data);
+        console.log("Status da resposta:", response.status);
+        if (response.status === 201) {
+          //limpa o localStorage
+          localStorage.removeItem("idAvaliacao");
+          Swal.fire({
+            icon: "success",
+            title: "Avaliação Enviada!",
+            text: "Sua avaliação foi enviada com sucesso.",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            // Redireciona para a página de sucesso
+            navigate("/Validacao");
+          });
+        }
       }
-
-      const data = await response.json();
-      console.log("Resposta do backend:", data);
-      alert("Avaliação enviada com sucesso!");
-      navigate("/Validacao");
     } catch (error) {
       console.error("Erro no envio:", error);
-      alert("Erro ao enviar a avaliação. Tente novamente.");
+      // Em caso de erro, exibe um alerta de erro
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Houve um erro ao enviar sua avaliação. Tente novamente.",
+        confirmButtonText: "Ok",
+      });
     }
   };
 
@@ -55,12 +99,22 @@ const AvalieProduto = () => {
             rules={[{ required: true, message: "Escolha uma categoria" }]}
           >
             <Select
-              placeholder="Escolha a categoria"
+              placeholder="Escolha uma categoria"
               bordered={false}
               className="custom-select"
+              showSearch
+              filterOption={(input, option) =>
+                option.children.toLowerCase().includes(input.toLowerCase())
+              }
+              onChange={(value) => {
+                setSelectedCategory(value);
+              }}
             >
-              <Option value="sorvete">Sorvete</Option>
-              <Option value="picolé">Picolé</Option>
+              {allCategories.map((category) => (
+                <Option key={category._id} value={category._id}>
+                  {category.nome}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -72,26 +126,19 @@ const AvalieProduto = () => {
               placeholder="Escolha o produto"
               bordered={false}
               className="custom-select"
+              showSearch
+              filterOption={(input, option) =>
+                option.children.toLowerCase().includes(input.toLowerCase())
+              }
+              onChange={(value) => {
+                setSelectedProduct(value);
+              }}
             >
-              <Option value="sorvetedez">Sorvete 10 Litros</Option>
-              <Option value="sorvete320">Sorvete 320ml</Option>
-              <Option value="sorvete15">Sorvete 1,5 Litros</Option>
-              <Option value="sorvete2">Sorvete 2 Litros</Option>
-              <Option value="picole">Picolé</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="sabor"
-            rules={[{ required: true, message: "Escolha o sabor" }]}
-          >
-            <Select
-              placeholder="Escolha o sabor"
-              bordered={false}
-              className="custom-select"
-            >
-              <Option value="chocolate">Chocolate</Option>
-              <Option value="morango">Morango</Option>
+              {allProducts.map((product) => (
+                <Option key={product._id} value={product._id}>
+                  {product.nome}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -133,7 +180,7 @@ const AvalieProduto = () => {
           >
             <Button
               type="primary"
-              onClick={() => navigate("/Validacao")}
+              onClick={handleSubmit}
               className="botao-validacao botao-concluir"
               style={{
                 display: "block",
@@ -143,7 +190,7 @@ const AvalieProduto = () => {
                 borderRadius: "1.5rem",
               }}
             >
-              Ir para Validação
+              Próximo Passo
             </Button>
           </div>
         </Form>

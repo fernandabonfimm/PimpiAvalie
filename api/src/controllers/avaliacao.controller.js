@@ -6,9 +6,12 @@ const Categoria = require('../models/categoria.model');
 
 exports.createStep1 = async (req, res) => {
   try {
-    const { local, cidade, estado } = req.body;
-
+    const {nome, email, telefone, local, cidade, estado } = req.body;
+    console.log(req.body);
     const novaAvaliacao = new AvaliacaoModel({
+      nome,
+      email, 
+      telefone,
       local,
       cidade,
       estado
