@@ -18,8 +18,8 @@ root.render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={< Step1Validacao />} />
-        <Route path="/Validacao" element={<AvalieProduto />} />
+        <Route path="/" element={< AvalieProduto />} />
+        <Route path="/Validacao" element={<Step1Validacao />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dash />} />
         <Route path="/admin/Avaliacoes" element={<Avaliacoes/>} />

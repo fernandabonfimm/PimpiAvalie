@@ -98,22 +98,14 @@ const AvalieProduto = () => {
       </div>
       <StepsComponent onClickEnd={handleSubmit}>
         <Form layout="vertical" form={form} className="form-avalie-produto">
-          <Form.Item
-            name="categoria"
-            rules={[{ required: true, message: "Escolha uma categoria" }]}
-          >
+          <Form.Item name="categoria" rules={[{ required: true, message: "Escolha uma categoria" }]}>
             <Select
               placeholder="Escolha uma categoria"
               bordered={false}
               className="custom-select"
-              showSearch
-              filterOption={(input, option) =>
-                option.children.toLowerCase().includes(input.toLowerCase())
-              }
-              onChange={(value) => {
-                setSelectedCategory(value);
-              }}
+              onChange={setSelectedCategory}
             >
+              <Option value="teste">Categoria Teste</Option> {/* Opção temporária */}
               {allCategories.map((category) => (
                 <Option key={category._id} value={category._id}>
                   {category.nome}
@@ -122,22 +114,15 @@ const AvalieProduto = () => {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name="produto"
-            rules={[{ required: true, message: "Escolha o produto" }]}
-          >
+
+          <Form.Item name="produto" rules={[{ required: true, message: "Escolha o produto" }]}>
             <Select
               placeholder="Escolha o produto"
               bordered={false}
               className="custom-select"
-              showSearch
-              filterOption={(input, option) =>
-                option.children.toLowerCase().includes(input.toLowerCase())
-              }
-              onChange={(value) => {
-                setSelectedProduct(value);
-              }}
+              onChange={setSelectedProduct}
             >
+              <Option value="teste">Produto Teste</Option> {/* Opção temporária */}
               {allProducts.map((product) => (
                 <Option key={product._id} value={product._id}>
                   {product.nome}
@@ -145,6 +130,7 @@ const AvalieProduto = () => {
               ))}
             </Select>
           </Form.Item>
+
 
           <div className="container-avaliacao">
             <span>Avalie o produto:</span>
@@ -178,25 +164,7 @@ const AvalieProduto = () => {
             />
           </Form.Item>
 
-          <div
-            className="container-botao-validacao"
-            style={{ marginBottom: "2rem" }}
-          >
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              className="botao-validacao botao-concluir"
-              style={{
-                display: "block",
-                margin: "0 auto",
-                height: "3rem",
-                fontWeight: "bold",
-                borderRadius: "1.5rem",
-              }}
-            >
-              Próximo Passo
-            </Button>
-          </div>
+          
         </Form>
       </StepsComponent>
     </Content>

@@ -1,10 +1,22 @@
 /* Container geral */
+/* Ajuste na estrutura do container geral */
 .container-step1-avalie {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px;
-    background-color: #fffef5; /* tom de fundo claro */
+    justify-content: center; /* Centraliza verticalmente */
+    text-align: center;
+    height: 100vh; /* Garante que ocupe toda a altura da tela sem problemas */
+    padding: 10px; /* Reduz o espaço para evitar deslocamentos */
+}
+
+/* Ajuste no título */
+.title-steps-avalie {
+    text-align: center;
+    padding: 12px;
+    background-color: #fffef5;
+    font-size: 30px;
+    font-weight: bold;
 }
 
 /* Logo centralizado */
@@ -278,4 +290,50 @@
   border-radius: 25px;
   background: #4caf50;
   color: white;
+}
+/* Estilização dos inputs */
+.input-custom {
+    border: 2px solid #FFD700; /* Borda amarela */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 12px 14px; /* Espaço interno */
+    font-size: 16px;
+    text-align: center; /* Centraliza o texto */
+    width: 100%;
+    max-width: 600px;
+    display: block;
+    margin: auto;
+}
+
+/* Estilização das labels */
+.form-avalie .ant-form-item-label > label {
+    color: #000; /* Texto escuro */
+    font-weight: bold;
+    text-align: center;
+    display: block;
+}
+
+/* Espaçamento entre os campos */
+.form-avalie .ant-form-item {
+    margin-bottom: 16px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Placeholder customizado */
+.input-custom::placeholder {
+    color: #999;
+}
+.form-avalie {
+  margin-bottom: 16px; /* Espaço entre os campos */
+}
+
+.form-avalie:last-of-type {
+  margin-bottom: 32px; /* Espaço maior antes do rodapé ou botão */
+}
+
+.input-custom {
+  border: 2px solid #ffc107; /* Borda amarela igual à da imagem */
+  border-radius: 10px;
+  padding: 10px;
 }

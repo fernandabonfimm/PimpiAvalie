@@ -1,67 +1,61 @@
-import React, { useState } from "react";
-import { Button, message, Steps, theme } from "antd";
-import { IoArrowRedo } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/components.css";
 
 const StepsComponent = ({ onClickEnd, children }) => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [currentStep, setCurrentStep] = useState(location.state?.step ?? 0);
 
-  const nextStep = () => {
-    setCurrentStep((prev) => prev + 1);
+  useEffect(() => {
+    if (location.state?.step !== undefined) {
+      setCurrentStep(location.state.step);
+    }
+  }, [location.state]);
+
+  const handleNextAction = async () => {
+    if (onClickEnd) await onClickEnd(); // Envia os dados ao backend
+
+    if (currentStep === 0) {
+      navigate("/Validacao", { state: { step: 1 } }); // Avança para Step 2
+    } else {
+      navigate("/Validacao", { state: { step: 2 } }); // Finaliza avaliação
+    }
   };
-
-  const steps = ["Avalie o Produto", "Informações"];
 
   return (
     <div className="steps-container-new">
       <div className="steps">
-        {/* Step 1 */}
         <div className="step-item">
-          <div
-            className={`step-circle ${
-              currentStep > 0 ? "completed" : currentStep === 0 ? "active" : ""
-            }`}
-          >
+          <div className={`step-circle ${currentStep > 0 ? "completed" : currentStep === 0 ? "active" : ""}`}>
             1
           </div>
         </div>
 
-        {/* Linha flexível */}
         <div className="step-line-flex" />
 
-        {/* Step 2 */}
         <div className="step-item">
-          <div
-            className={`step-circle ${
-              currentStep === 1 ? "active" : ""
-            }`}
-          >
+          <div className={`step-circle ${currentStep === 1 ? "active" : currentStep === 2 ? "completed" : ""}`}>
             2
           </div>
         </div>
       </div>
 
-      <div className="container-children">
-        {children}
-      </div>
+      <div className="container-children">{children}</div>
 
       <div className="container-buttons">
-        
+        <Button
+          type="primary"
+          onClick={handleNextAction}
+          className="btn-validation"
+        >
+          {currentStep === 0 ? "Próximo Passo" : "Concluir Avaliação"}
+        </Button>
       </div>
     </div>
-
-    
   );
-  const navigate = useNavigate(); // Certifique-se de que useNavigate está declarado no componente
-
-<Button 
-  type="primary" 
-  onClick={() => navigate('/Validacao')} 
-  className="botao-validacao"
->
-  Ir para Validação
-</Button>
-
 };
 
 export default StepsComponent;
