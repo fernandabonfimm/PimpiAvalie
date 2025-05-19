@@ -4,12 +4,11 @@ const moongoose = require("mongoose");
 exports.createProduto = async (req, res) => {
 try{
   const Produto = new ProdutoModel(req.body);
-  if(!Produto.nome || !Produto.idAdmin){
-      return res.status(400).json({ message: "Nome and descricao are required" });
+  if(!Produto.nome && !Produto.idCategoria){
+      return res.status(400).json({ message: "Nome and idCategoria are required" });
   }
   await Produto.save();
-  let nome = Produto.nome;
-  res.status(200).json({ message: "Produto created successfully", nome });
+  res.status(200).json({ message: "Produto created successfully", Produto });
 }catch(error){
     res.status(500).json({ message: "Error creating Produto", error });
   }

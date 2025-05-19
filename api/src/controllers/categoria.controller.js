@@ -4,12 +4,11 @@ const moongoose = require("mongoose");
 exports.createCategoria = async (req, res) => {
 try{
   const categoria = new CategoriaModel(req.body);
-  if(!categoria.nome || !categoria.idAdmin){
-      return res.status(400).json({ message: "Nome and descricao are required" });
+  if(!categoria.nome){
+      return res.status(400).json({ message: "Nome is required" });
   }
   await categoria.save();
-  let nome = categoria.nome;
-  res.status(200).json({ message: "Categoria created successfully", nome });
+  res.status(200).json({ message: "Categoria created successfully", categoria });
 }catch(error){
     res.status(500).json({ message: "Error creating Categoria", error });
   }

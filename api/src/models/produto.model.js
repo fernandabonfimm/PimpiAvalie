@@ -8,7 +8,7 @@ const produto = new mongoose.Schema(
         },
         valor:{
             type: String,
-            required: true,
+            required: false,
         },
         idCategoria:{
             type: mongoose.Schema.Types.ObjectId,

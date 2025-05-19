@@ -5,11 +5,6 @@ const categoria = new mongoose.Schema(
         nome: {
             type: String,
             required: true,
-        },
-        idAdmin: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Admin',
-            required: true,
         }
     },
     { timestamps: true }

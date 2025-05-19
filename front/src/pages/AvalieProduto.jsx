@@ -5,6 +5,8 @@ import StepsComponent from "../components/steps";
 import "../styles/pages_avalie_produto.css";
 import { FaFolder, FaStar, FaIceCream } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../api";
+import Swal from "sweetalert2";
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -23,6 +25,7 @@ const AvalieProduto = () => {
     const fetchCategories = async () => {
       try {
         const response = await api.get("categoria");
+        console.log("Categorias:", response.data);
         setAllCategories(response.data);
       } catch (error) {
         console.error("Erro ao buscar categorias:", error);
@@ -32,6 +35,7 @@ const AvalieProduto = () => {
     const fetchProducts = async () => {
       try {
         const response = await api.get("produto");
+        console.log("Produtos:", response.data);
         setAllProducts(response.data);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
@@ -53,18 +57,17 @@ const AvalieProduto = () => {
         idProduto: selectedProduct,
         idCategoria: selectedCategory,
       };
+      console.log("Dados da avaliação:", payload);
 
       // Envia a avaliação para o backend
       const getId = localStorage.getItem("idAvaliacao");
-      // o id tem que fazrer parse e string
-      const parsedId = JSON.parse(getId);
-      console.log("ID da avaliação:", parsedId);
+      console.log("ID da avaliação:", getId);
       // Verifica se o ID existe antes de enviar a requisição
-      if (parsedId) {
-        const response = await api.put(`avaliacao/step2/${parsedId}`, payload);
+      if (getId) {
+        const response = await api.put(`avaliacao/step2/${getId}`, payload);
         console.log("Resposta do backend:", response.data);
         console.log("Status da resposta:", response.status);
-        if (response.status === 201) {
+        if (response.status === 201 || response.status === 200) {
           //limpa o localStorage
           localStorage.removeItem("idAvaliacao");
           Swal.fire({
@@ -74,7 +77,7 @@ const AvalieProduto = () => {
             confirmButtonText: "Ok",
           }).then(() => {
             // Redireciona para a página de sucesso
-            navigate("/Validacao");
+            navigate("/sucesso");
           });
         }
       }
@@ -105,7 +108,6 @@ const AvalieProduto = () => {
               className="custom-select"
               onChange={setSelectedCategory}
             >
-              <Option value="teste">Categoria Teste</Option> {/* Opção temporária */}
               {allCategories.map((category) => (
                 <Option key={category._id} value={category._id}>
                   {category.nome}
@@ -122,7 +124,6 @@ const AvalieProduto = () => {
               className="custom-select"
               onChange={setSelectedProduct}
             >
-              <Option value="teste">Produto Teste</Option> {/* Opção temporária */}
               {allProducts.map((product) => (
                 <Option key={product._id} value={product._id}>
                   {product.nome}

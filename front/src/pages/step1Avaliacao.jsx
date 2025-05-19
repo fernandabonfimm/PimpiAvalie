@@ -25,6 +25,7 @@ const Step1Validacao = () => {
         cidade: values.cidade,
         estado: "SP",
       };
+      console.log("Dados da avaliação:", payload);
 
       // Envia a avaliação para o backend
       const response = await api.post("avaliacao/step1", payload);
@@ -34,13 +35,15 @@ const Step1Validacao = () => {
       if (response.status === 201) {
         // Armazena o ID da avaliação no localStorage
         localStorage.setItem("idAvaliacao", response.data._id);
+        console.log("ID da avaliação armazenado:", response.data._id);
         Swal.fire({
           icon: "success",
           title: "Avaliação Enviada!",
           text: "Sua avaliação foi enviada com sucesso.",
           confirmButtonText: "Ok",
         }).then(() => {
-          navigate("/sucesso");
+          navigate("/Validacao");
+          
         });
       }
     } catch (error) {
