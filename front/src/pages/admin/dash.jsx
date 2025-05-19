@@ -26,6 +26,7 @@ const Dash = () => {
     const getQuantityOfGoodReviews = async () => {
       try {
         const response = await api.get("avaliacao/quantidade/bom");
+        console.log(response.data);
         setQuantityOfGoodReviews(response.data.quantidade);
       } catch (error) {
         console.error("Erro ao buscar avaliações boas:", error);
@@ -35,6 +36,7 @@ const Dash = () => {
     const getQuantityOfBadReviews = async () => {
       try {
         const response = await api.get("avaliacao/quantidade/ruim");
+        console.log(response.data);
         setQuantityOfBadReviews(response.data.quantidade);
       } catch (error) {
         console.error("Erro ao buscar avaliações ruins:", error);
@@ -42,7 +44,8 @@ const Dash = () => {
     };
     const getQuantityOfAllReviews = async () => {
       try {
-        const response = await api.get("avaliacao/quantidade");
+        const response = await api.get("avaliacao/quantidade/todas");
+        console.log(response.data);
         setQuantityOfReviews(response.data.quantidade);
       } catch (error) {
         console.error("Erro ao buscar todas as avaliações:", error);
@@ -53,17 +56,6 @@ const Dash = () => {
     getQuantityOfGoodReviews();
   }, []);
 
-  React.useEffect(() => {
-    const getAvaliacaoTrends = async () => {
-      try {
-        const response = await api.get("avaliacao/grafico");
-        setDataChartTrends(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar tendências de avaliações:", error);
-      }
-    }
-    getAvaliacaoTrends();
-  }, []);
   return (
     <Base
       children={
@@ -83,28 +75,6 @@ const Dash = () => {
               <h2>{quantityOfReviews ? quantityOfReviews : 0 }</h2>
               <p>Avaliações (30 dias)</p>
             </div>
-          </div>
-
-          <div id="container" style={{ width: "100%", height: "400px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              {/* <LineChart
-                data={dataChartTrends}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="boas"
-                  stroke="#82ca9d"
-                  activeDot={{ r: 8 }}
-                />
-                <Line type="monotone" dataKey="ruins" stroke="#ff0000" />
-              </LineChart> */}
-            </ResponsiveContainer>
           </div>
         </div>
       }
