@@ -38,8 +38,8 @@ const Step1Validacao = () => {
         console.log("ID da avaliação armazenado:", response.data._id);
         Swal.fire({
           icon: "success",
-          title: "Avaliação Enviada!",
-          text: "Sua avaliação foi enviada com sucesso.",
+          title: "Primeiro passo enviado!",
+          text: "O primeiro passo foi concluido.",
           confirmButtonText: "Ok",
         }).then(() => {
           navigate("/Validacao");

@@ -28,6 +28,7 @@ const Cadastro = () => {
           text: "Categoria criada com sucesso!",
           confirmButtonText: "OK",
         });
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Erro ao criar categoria:", error);
@@ -198,6 +199,7 @@ const Cadastro = () => {
             dataSource={products}
             columns={productColumns}
             pagination={{ pageSize: 5 }}
+            rowKey={(record) => record._id}
           />
         </div>
       </div>
