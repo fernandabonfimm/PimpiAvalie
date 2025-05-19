@@ -10,7 +10,7 @@ const SuccessPage = () => {
     <Content className="success-container">
       <div className="success-content">
         <div className="icon-wrapper">
-          <FaRocket className="icon" />
+          <FaRocket className="icon" style={{ color: "#D0021B", fontSize: "48px" }} />
           <div className="fireworks"></div>
         </div>
         <h1 className="success-title">Avaliação Enviada com Sucesso!</h1>
