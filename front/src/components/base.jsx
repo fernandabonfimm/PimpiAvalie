@@ -25,14 +25,17 @@ function Base({ children }) {
     navigate(`/admin/${key}`);
   };
 
-  React.useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("@admUser") || "null");
-    if (!storedUser) {
-      navigate("/admin/login");
-    } else {
-      setNome(String(storedUser.nome));
-    }
-  }, [navigate]);
+React.useEffect(() => {
+  const storedData = JSON.parse(localStorage.getItem("@admUser") || "null");
+
+  if (!storedData || !Array.isArray(storedData) || storedData.length === 0) {
+    navigate("/admin/login");
+  } else {
+    const nome = storedData[0]?.nome || "Usuário novo";
+    setNome(String(nome));
+  }
+}, [navigate]);
+
   return (
     <div style={{ minHeight: "100vh" }}>
       <Header className="header">
