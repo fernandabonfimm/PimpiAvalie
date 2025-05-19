@@ -1,74 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input, message } from "antd";
 import "../../styles/admin/avaliacoes.css";
 import Base from "../../components/base";
+import { api } from "../../../api";
+import Swal from "sweetalert2";
 
 const Avaliacoes = () => {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: "1",
-      nome: "João da Silva",
-      email: "joao@email.com",
-      localCompra: "Supermercado X",
-      cidade: "Ribeirão Preto",
-    },
-    {
-      key: "2",
-      nome: "Maria Souza",
-      email: "maria@email.com",
-      localCompra: "Loja Y",
-      cidade: "São Paulo",
-    },
-  ]);
+  const [dataSource, setDataSource] = useState([]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [form] = Form.useForm();
+  const [dataSelecionada, setDataSelecionada] = useState(null);
+  const [nomeProduto, setNomeProduto] = useState("");
+  const [nomeCategoria, setNomeCategoria] = useState("");
+  const [idProduto, setIdProduto] = useState("");
+  const [idCategoria, setIdCategoria] = useState("");
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/avaliacao");
+        const data = response.data.map((item) => ({
+          key: item._id,
+          nome: item.nome,
+          email: item.email,
+          localCompra: item.local,
+          cidade: item.cidade,
+          nota: item.nivel,
+          descricao: item.descricao,
+          telefone: item.telefone,
+          comprariaNovamente: item.comprariaNovamente,
+          createdAt: item.createdAt,
+          idProduto: item.idProduto,
+          idCategoria: item.idCategoria,
+        }));
+        setDataSource(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: "Erro ao buscar dados",
+          confirmButtonText: "OK",
+        });
+      }
+    };
+    fetchData();
+  }, []);
 
   const visualizar = (record) => {
-    setSelectedRecord(record);
-    setIsEditing(false);
+    setSelectedRecord(record.key);
+    console.log(record);
+    setIdProduto(record.idProduto);
+    setIdCategoria(record.idCategoria);
+    setDataSelecionada(record);
     setIsModalVisible(true);
   };
 
-  const editar = (record) => {
-    setSelectedRecord(record);
-    setIsEditing(true);
-    form.setFieldsValue(record);
-    setIsModalVisible(true);
-  };
+  React.useEffect(() => {
+    const fetchProduto = async () => {
+      try {
+        const response = await api.get(`/produto/${idProduto}`);
+        const data = response.data;
+        setNomeProduto(data.nome);
+      } catch (error) {
+        console.error("Erro ao buscar dados do produto:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: "Erro ao buscar dados do produto",
+          confirmButtonText: "OK",
+        });
+      }
+    };
 
-  const deletar = (key) => {
-    Modal.confirm({
-      title: "Você tem certeza que deseja deletar?",
-      onOk: () => {
-        setDataSource((prev) => prev.filter((item) => item.key !== key));
-        message.success("Deletado com sucesso");
-      },
-    });
-  };
+    const fetchCategoria = async () => {
+      try {
+        const response = await api.get(`/categoria/${idCategoria}`);
+        const data = response.data;
+        setNomeCategoria(data.nome);
+      } catch (error) {
+        console.error("Erro ao buscar dados da categoria:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro",
+          text: "Erro ao buscar dados da categoria",
+          confirmButtonText: "OK",
+        });
+      }
+    };
+    if (idProduto) {
+      fetchProduto();
+    }
+    if (idCategoria) {
+      fetchCategoria();
+    }
+  }, [idProduto, idCategoria]);
 
   const handleOk = () => {
-    if (isEditing) {
-      form.validateFields().then((values) => {
-        setDataSource((prev) =>
-          prev.map((item) =>
-            item.key === selectedRecord.key ? { ...item, ...values } : item
-          )
-        );
-        message.success("Atualizado com sucesso");
-        setIsModalVisible(false);
-        form.resetFields();
-      });
-    } else {
-      setIsModalVisible(false);
-    }
+    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    form.resetFields();
+    setSelectedRecord(null);
   };
 
   const columns = [
@@ -93,18 +128,17 @@ const Avaliacoes = () => {
       key: "cidade",
     },
     {
+      title: "Nota",
+      dataIndex: "nota",
+      key: "nota",
+    },
+    {
       title: "Ações",
       key: "acoes",
       render: (_, record) => (
         <div className="botoes-acoes">
           <Button className="btn-vermelho" onClick={() => visualizar(record)}>
             Visualizar
-          </Button>
-          <Button className="btn-amarelo" onClick={() => editar(record)}>
-            Editar
-          </Button>
-          <Button danger onClick={() => deletar(record.key)}>
-            Deletar
           </Button>
         </div>
       ),
@@ -126,56 +160,58 @@ const Avaliacoes = () => {
           </div>
 
           <Modal
-            title={isEditing ? "Editar Avaliação" : "Visualizar Avaliação"}
+            title={"Visualizar Avaliação"}
             open={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
-            okText={isEditing ? "Salvar" : "Fechar"}
+            okText={"Fechar"}
             cancelButtonProps={{
-              style: { display: isEditing ? "inline" : "none" },
+              style: { display: "none" },
             }}
           >
-            {isEditing ? (
-              <Form form={form} layout="vertical">
-                <Form.Item
-                  name="nome"
-                  label="Nome"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="email"
-                  label="E-mail"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item name="localCompra" label="Local da Compra">
-                  <Input />
-                </Form.Item>
-                <Form.Item name="cidade" label="Cidade">
-                  <Input />
-                </Form.Item>
-              </Form>
-            ) : (
-              selectedRecord && (
-                <div>
-                  <p>
-                    <strong>Nome:</strong> {selectedRecord.nome}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {selectedRecord.email}
-                  </p>
-                  <p>
-                    <strong>Local da Compra:</strong>{" "}
-                    {selectedRecord.localCompra}
-                  </p>
-                  <p>
-                    <strong>Cidade:</strong> {selectedRecord.cidade}
-                  </p>
-                </div>
-              )
+            {dataSelecionada && (
+              <div>
+                <p>
+                  <strong>Nome:</strong> {dataSelecionada.nome}
+                </p>
+                <p>
+                  <strong>Email:</strong> {dataSelecionada.email}
+                </p>
+                <p>
+                  <strong>Local da Compra:</strong>{" "}
+                  {dataSelecionada.localCompra}
+                </p>
+                <p>
+                  <strong>Cidade:</strong> {dataSelecionada.cidade}
+                </p>
+                <p>
+                  <strong>Telefone:</strong> {dataSelecionada.telefone}
+                </p>
+                <p>
+                  <strong>Nota:</strong> {dataSelecionada.nota}
+                </p>
+                <p>
+                  <strong>Compraria Novamente:</strong>{" "}
+                  {dataSelecionada.comprariaNovamente}
+                </p>
+                <p>
+                  <strong>Descrição:</strong> {dataSelecionada.descricao}
+                </p>
+                <p>
+                  <strong>Produto:</strong> {nomeProduto}
+                </p>
+                <p>
+                  <strong>Categoria:</strong> {nomeCategoria}
+                </p>
+                <p>
+                  <strong>Data:</strong>{" "}
+                  {new Date(dataSelecionada.createdAt).toLocaleDateString("pt-BR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
+                </p>
+              </div>
             )}
           </Modal>
         </div>
