@@ -58,6 +58,6 @@ router.get("/avaliacao/:id", getAvaliacaoById);
 router.get("/avaliacao/quantidade/bom", getQuantityOfGoodAvaliationsByNivel);
 router.get("/avaliacao/quantidade/ruim", getQuantityOfBadAvaliationsByNivel);
 router.get("/avaliacao/quantidade/todas", getQuantityOfAllAvaliations);
-router.get("/avaliacao/trends", getAvaliacaoTrendsComprariaNovamente);
+router.get("/avaliacao/grafico/all", getAvaliacaoTrendsComprariaNovamente);
 
 module.exports = router;

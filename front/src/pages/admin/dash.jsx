@@ -14,10 +14,6 @@ import Base from "../../components/base";
 import { api } from "../../../api";
 
 const Dash = () => {
-  const boasAvaliacoes = 9449;
-  const masAvaliacoes = 1550;
-  const avaliacoesUltimos30Dias = 4073;
-  const produtoMaisAvaliado = { name: "Pote 2L Sensação", total: 1200 };
   const [quantityOfGoodReviews, setQuantityOfGoodReviews] = React.useState(0);
   const [quantityOfBadReviews, setQuantityOfBadReviews] = React.useState(0);
   const [quantityOfReviews, setQuantityOfReviews] = React.useState(0);
@@ -56,6 +52,26 @@ const Dash = () => {
     getQuantityOfGoodReviews();
   }, []);
 
+React.useEffect(() => {
+  const getTrends = async () => {
+    try {
+      const response = await api.get("avaliacao/grafico/all");
+      console.log(response.data);
+      const formattedData = response.data.data.map((item) => ({
+        _id: item._id,
+        boas: item.boas,
+        ruins: item.ruins,
+      }));
+      setDataChartTrends(formattedData);
+      console.log(formattedData);
+    } catch (error) {
+      console.error("Erro ao buscar tendências:", error);
+    }
+  };
+  getTrends();
+}, []);
+
+
   return (
     <Base
       children={
@@ -72,9 +88,37 @@ const Dash = () => {
               <p>Avaliações Ruins</p>
             </div>
             <div className="card yellow">
-              <h2>{quantityOfReviews ? quantityOfReviews : 0 }</h2>
+              <h2>{quantityOfReviews ? quantityOfReviews : 0}</h2>
               <p>Avaliações (30 dias)</p>
             </div>
+          </div>
+          <div style={{ width: "100%", height: 400 }}>
+            <ResponsiveContainer>
+              <LineChart data={dataChartTrends}>
+                
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" tick={{ fontSize: 12 }} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="boas"
+                  stroke="#4CAF50" // verde
+                  strokeWidth={3}
+                  activeDot={{ r: 8 }}
+                  name="Avaliações Boas"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="ruins"
+                  stroke="#F44336" // vermelho
+                  strokeWidth={3}
+                  activeDot={{ r: 8 }}
+                  name="Avaliações Ruins"
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       }

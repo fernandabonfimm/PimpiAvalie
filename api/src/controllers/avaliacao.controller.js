@@ -186,100 +186,56 @@ exports.getQuantityOfAllAvaliations = async (req, res) => {
 
 exports.getAvaliacaoTrendsComprariaNovamente = async (req, res) => {
   try {
-    const agora = new Date();
-    const trintaDiasAtras = new Date(
-      agora.getTime() - 30 * 24 * 60 * 60 * 1000
-    );
-
-    console.log(trintaDiasAtras);
-    console.log(agora);
-
-    const resultados = await AvaliacaoModel.aggregate([
+    const resultado = await AvaliacaoModel.aggregate([
       {
         $addFields: {
-          nivelNumerico: { $toInt: "$nivel" },
+          nivelInt: { $toInt: "$nivel" },
+          data: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
         },
       },
-      {
-        $match: {
-          createdAt: { $gte: trintaDiasAtras, $lte: agora },
-          nivelNumerico: { $gte: 0 }, // garante que só números válidos passem
-        },
-      },
-      {
-        $project: {
-          dia: {
-            $dateToString: { format: "%d/%m", date: "$createdAt" },
-          },
-          ehBoa: {
-            $cond: [
-              {
-                $and: [
-                  { $gt: ["$nivelNumerico", 3] },
-                  {
-                    $regexMatch: {
-                      input: "$comprariaNovamente",
-                      regex: /^sim$/i,
-                    },
-                  },
-                ],
-              },
-              true,
-              false,
-            ],
-          },
-        },
-      },
+      // Agrupar por dia
       {
         $group: {
-          _id: "$dia",
+          _id: "$data",
           boas: {
             $sum: {
-              $cond: [{ $eq: ["$ehBoa", true] }, 1, 0],
+              $cond: [
+                {
+                  $and: [
+                    { $gt: ["$nivelInt", 3] },
+                    { $eq: ["$comprariaNovamente", "sim"] },
+                  ],
+                },
+                1,
+                0,
+              ],
             },
           },
           ruins: {
             $sum: {
-              $cond: [{ $eq: ["$ehBoa", false] }, 1, 0],
+              $cond: [
+                {
+                  $and: [
+                    { $lt: ["$nivelInt", 3] },
+                    { $eq: ["$comprariaNovamente", "não"] },
+                  ],
+                },
+                1,
+                0,
+              ],
             },
           },
         },
       },
+      // Ordenar por data
       {
-        $sort: { _id: 1 }, // ordena pelos dias
+        $sort: { _id: 1 },
       },
     ]);
-    console.log(resultados);
-    const diasCompletos = [];
-    for (let i = 29; i >= 0; i--) {
-      const data = new Date();
-      data.setDate(data.getDate() - i);
-      const diaFormatado = data.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-      });
 
-      console.log(diaFormatado)
-      const encontrado = resultados.find((r) => r._id === diaFormatado);
-      console.log(encontrado);
-      diasCompletos.push({
-        dia: diaFormatado,
-        boas: encontrado?.boas || 0,
-        ruins: encontrado?.ruins || 0,
-      });
-      console.log(diasCompletos);
-    }
-
-    res.status(200).json({
-      sucesso: true,
-      grafico: diasCompletos, // ideal para alimentar gráfico de linha
-    });
+    res.status(200).json({ data: resultado });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      sucesso: false,
-      mensagem: "Erro ao gerar dados para o gráfico de avaliações",
-      error,
-    });
+    console.error("Erro ao gerar gráfico:", error);
+    res.status(500).json({ error: "Erro ao gerar gráfico" });
   }
 };
