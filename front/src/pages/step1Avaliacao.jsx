@@ -59,7 +59,7 @@ const Step1Validacao = () => {
 
   return (
     <Content className="container-step1-avalie">
-      <div className="container-img-avalie">
+      <div className="container-img-avalie" style={{marginTop: '200px'}}>
         <img src={Logo} alt="logo" />
       </div>
       <StepsComponent onClickEnd={handleSubmit}>
