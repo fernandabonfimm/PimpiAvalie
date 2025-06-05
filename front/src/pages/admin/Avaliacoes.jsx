@@ -4,6 +4,7 @@ import "../../styles/admin/avaliacoes.css";
 import Base from "../../components/base";
 import { api } from "../../../api";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
 
 const Avaliacoes = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -15,6 +16,7 @@ const Avaliacoes = () => {
   const [nomeCategoria, setNomeCategoria] = useState("");
   const [idProduto, setIdProduto] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
+  const [csvData, setCsvData] = useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -106,6 +108,13 @@ const Avaliacoes = () => {
     setSelectedRecord(null);
   };
 
+  const getUniqueValues = (data, key) => {
+    return [...new Set(data.map((item) => item[key]))].map((value) => ({
+      text: value,
+      value,
+    }));
+  };
+
   const columns = [
     {
       title: "Nome",
@@ -121,16 +130,30 @@ const Avaliacoes = () => {
       title: "Local de Compra",
       dataIndex: "localCompra",
       key: "localCompra",
+      filters: getUniqueValues(dataSource, "localCompra"),
+      onFilter: (value, record) => record.localCompra === value,
     },
     {
       title: "Cidade",
       dataIndex: "cidade",
       key: "cidade",
+      filters: getUniqueValues(dataSource, "cidade"),
+      onFilter: (value, record) => record.cidade === value,
+    },
+    {
+      title: "Data",
+      dataIndex: "data",
+      key: "data",
+      filters: getUniqueValues(dataSource, "data"),
+      onFilter: (value, record) => record.data === value,
+      render: (text) => dayjs(text).format("DD/MM/YYYY"),
     },
     {
       title: "Nota",
       dataIndex: "nota",
       key: "nota",
+      filters: getUniqueValues(dataSource, "nota"),
+      onFilter: (value, record) => record.nota === value,
     },
     {
       title: "Ações",
@@ -145,11 +168,36 @@ const Avaliacoes = () => {
     },
   ];
 
+  async function exportToCSV() {
+    try {
+      const response = await api.get("/avaliacao/exportar/data", {
+        responseType: "blob", // Para receber o arquivo como blob
+      });
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "avaliacoes.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      message.success("CSV exportado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao exportar CSV:", error);
+      message.error("Erro ao exportar as avaliações.");
+    }
+  }
+
   return (
     <Base
       children={
         <div className="dashboard-container">
           <h1 className="title-principal">Avaliações</h1>
+          <div className="botoes-acoes">
+            <Button className="btn-exportar" onClick={exportToCSV}>
+              Exportar CSV
+            </Button>
+          </div>
           <div className="tabela-responsive">
             <Table
               dataSource={dataSource}
@@ -205,11 +253,14 @@ const Avaliacoes = () => {
                 </p>
                 <p>
                   <strong>Data:</strong>{" "}
-                  {new Date(dataSelecionada.createdAt).toLocaleDateString("pt-BR", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  })}
+                  {new Date(dataSelecionada.createdAt).toLocaleDateString(
+                    "pt-BR",
+                    {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    }
+                  )}
                 </p>
               </div>
             )}

@@ -29,6 +29,7 @@ const {
   getQuantityOfBadAvaliationsByNivel,
   getQuantityOfAllAvaliations,
   getAvaliacaoTrendsComprariaNovamente,
+  exportarAvaliacoesCSV,
 } = require("../controllers/avaliacao.controller");
 // Admin routes
 router.post("/admin", createAdmin);
@@ -59,5 +60,6 @@ router.get("/avaliacao/quantidade/bom", getQuantityOfGoodAvaliationsByNivel);
 router.get("/avaliacao/quantidade/ruim", getQuantityOfBadAvaliationsByNivel);
 router.get("/avaliacao/quantidade/todas", getQuantityOfAllAvaliations);
 router.get("/avaliacao/grafico/all", getAvaliacaoTrendsComprariaNovamente);
+router.get("/avaliacao/exportar/data", exportarAvaliacoesCSV);
 
 module.exports = router;

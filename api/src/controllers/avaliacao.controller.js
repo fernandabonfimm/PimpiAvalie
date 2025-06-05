@@ -3,6 +3,47 @@ const mongoose = require("mongoose");
 const b2bModel = require("../models/b2b.model");
 const Produto = require("../models/produto.model");
 const Categoria = require("../models/categoria.model");
+const { Parser } = require("json2csv");
+
+exports.exportarAvaliacoesCSV = async (req, res) => {
+ try {
+    // Busca todas as avaliações sem populate
+    const avaliacoes = await AvaliacaoModel.find();
+
+    console.log("Avaliações encontradas:", avaliacoes.length);
+    if (!avaliacoes || avaliacoes.length === 0) {
+      return res.status(404).json({ message: "Nenhuma avaliação encontrada." });
+    }
+
+    // Campos que deseja exportar (podem ser todos os do modelo)
+    const campos = [
+      "nome",
+      "email",
+      "telefone",
+      "local",
+      "cidade",
+      "estado",
+      "nivel",
+      "comprariaNovamente",
+      "descricao",
+      "createdAt",
+      "updatedAt"
+    ];
+
+    // Cria e processa o CSV
+    const parser = new Parser({ fields: campos });
+    console.log("Campos para exportação:", campos);
+    const csv = parser.parse(avaliacoes);
+    console.log("CSV gerado com sucesso");
+    // Cabeçalhos para download de CSV
+    res.header("Content-Type", "text/csv");
+    res.attachment("avaliacoes.csv");
+    res.send(csv);
+  } catch (error) {
+    console.error("Erro ao exportar CSV:", error);
+    res.status(500).json({ message: "Erro ao exportar avaliações.", error });
+  }
+};
 
 exports.createStep1 = async (req, res) => {
   try {
