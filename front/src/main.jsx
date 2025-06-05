@@ -11,6 +11,7 @@ import "./index.css"; // Importa o CSS global
 import AvalieProduto from "./pages/AvalieProduto";
 import Cadastro from "./pages/admin/cadastro"; // Corrigida a importação
 import SuccessPage from "./pages/sucesso";
+import Produto from "./pages/admin/produto";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -25,6 +26,7 @@ root.render(
         <Route path="/admin/Avaliacoes" element={<Avaliacoes/>} />
         <Route path="/admin/cadastro" element={<Cadastro />} />
         <Route path="/sucesso" element={<SuccessPage />} />
+        <Route path="/admin/produto" element={<Produto />} />
         {/* Adicione outras rotas conforme necessário */}
       </Routes>
     </Router>

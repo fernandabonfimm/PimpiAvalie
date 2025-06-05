@@ -5,6 +5,7 @@ import Base from "../../components/base";
 import { api } from "../../../api";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { render } from "react-dom";
 
 const Avaliacoes = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -144,9 +145,12 @@ const Avaliacoes = () => {
       title: "Data",
       dataIndex: "data",
       key: "data",
-      filters: getUniqueValues(dataSource, "data"),
-      onFilter: (value, record) => record.data === value,
-      render: (text) => dayjs(text).format("DD/MM/YYYY"),
+      render: (text, record) =>
+        new Date(record.createdAt).toLocaleDateString("pt-BR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
     },
     {
       title: "Nota",

@@ -3,6 +3,9 @@ import "../styles/admin/base.css";
 import { Layout, Menu } from "antd";
 import Logo from "../assets/images/logo3.png";
 import { StarOutlined, PieChartOutlined, UserOutlined } from "@ant-design/icons";
+import { MdOutlineCategory } from "react-icons/md";
+import { AiOutlineProduct } from "react-icons/ai";
+
 import { useNavigate, useLocation } from "react-router-dom"; // <-- Importa useLocation para identificar a página ativa
 
 const { Header, Content, Sider } = Layout;
@@ -14,7 +17,8 @@ function getItem(label, key, icon) {
 const items = [
   getItem("Dashboard", "dashboard", <PieChartOutlined />),
   getItem("Avaliações", "avaliacoes", <StarOutlined />),
-  getItem("Cadastro", "cadastro", <StarOutlined />),
+  getItem("Cadastro", "cadastro", <MdOutlineCategory />),
+  // getItem("Produtos", "produto", <AiOutlineProduct />)
 ];
 
 function Base({ children }) {

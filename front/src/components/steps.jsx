@@ -6,7 +6,7 @@ import "../styles/components.css";
 const StepsComponent = ({ onClickEnd, children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const [currentStep, setCurrentStep] = useState(location.state?.step ?? 0);
 
   useEffect(() => {
@@ -27,22 +27,39 @@ const StepsComponent = ({ onClickEnd, children }) => {
 
   return (
     <div className="steps-container-new">
-      <div className="steps">
-        <div className="step-item">
-          <div className={`step-circle ${currentStep > 0 ? "completed" : currentStep === 0 ? "active" : ""}`}>
-            1
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="steps-new">
+          <div className="step-item">
+            <div
+              className={`step-circle ${
+                currentStep > 0
+                  ? "completed"
+                  : currentStep === 0
+                  ? "active"
+                  : ""
+              }`}
+            >
+              1
+            </div>
           </div>
-        </div>
 
-        <div className="step-line-flex" />
+          <div className="step-line-flex" />
 
-        <div className="step-item">
-          <div className={`step-circle ${currentStep === 1 ? "active" : currentStep === 2 ? "completed" : ""}`}>
-            2
+          <div className="step-item">
+            <div
+              className={`step-circle ${
+                currentStep === 1
+                  ? "active"
+                  : currentStep === 2
+                  ? "completed"
+                  : ""
+              }`}
+            >
+              2
+            </div>
           </div>
         </div>
       </div>
-
       <div className="container-children">{children}</div>
 
       <div className="container-buttons">

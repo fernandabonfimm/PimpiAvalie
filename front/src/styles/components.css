@@ -2,18 +2,18 @@
 .steps-container-new {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* IMPORTANTE */
+    justify-content: center; /* IMPORTANTE */
     height: 100vh; /* ocupa a tela toda */
-    width: 100%;
+    width: 50%;
     box-sizing: border-box;
 }
 
 /* Área dos steps */
-.steps {
+.steps-new {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 50%;
     padding-inline: 20px;
     box-sizing: border-box;
 }

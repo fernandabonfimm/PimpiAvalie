@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/admin/Cadastro.css"; // Importando os estilos
 import Base from "../../components/base";
-import { Table, Button, Input, Select, Modal } from "antd";
+import { Table, Button, Input, Select, Modal, Row, Col } from "antd";
 import { api } from "../../../api";
 import Swal from "sweetalert2";
 
@@ -137,8 +137,8 @@ const Cadastro = () => {
 
   return (
     <Base>
-      <div className="container">
-        <h1>Painel Administrativo</h1>
+      <div className="dashboard-container">
+        <h1 className="title-principal">Produtos e Categorias</h1>
 
         <div className="form-section">
           <h2>Criar Categoria</h2>
@@ -151,6 +151,15 @@ const Cadastro = () => {
           <Button className="button-red" onClick={addCategory}>
             Adicionar Categoria
           </Button>
+        </div>
+
+        <div className="table-section">
+          <h2>Categorias Criadas</h2>
+          <Table
+            dataSource={categories}
+            columns={categoryColumns}
+            pagination={{ pageSize: 5 }}
+          />
         </div>
 
         <div className="form-section">
@@ -182,15 +191,6 @@ const Cadastro = () => {
           <Button className="button-red" onClick={addProduct}>
             Adicionar Produto
           </Button>
-        </div>
-
-        <div className="table-section">
-          <h2>Categorias Criadas</h2>
-          <Table
-            dataSource={categories}
-            columns={categoryColumns}
-            pagination={{ pageSize: 5 }}
-          />
         </div>
 
         <div className="table-section">
